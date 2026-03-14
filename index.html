@@ -239,64 +239,117 @@
 </head>
 <body>
 
-  <header>
-    <div class="header-left">
-      <h1>Mis<br><span>Presentaciones</span></h1>
-      <p>Colección de presentaciones interactivas. Cada una vive en su propia carpeta y se versiona con Git.</p>
-    </div>
-    <div class="header-right">
-      <span class="count" id="count">01</span>
-      presentaciones
-    </div>
-  </header>
+  <h1>Análisis General y Comparativo Q1 — El Condado</h1>
+  <p class="subtitle">1er Bimestre 2025 vs 1er Bimestre 2026 · Flujo de efectivo</p>
 
-  <div class="grid" id="grid">
+  <p class="section-label">Tabla comparativa — Ene–Feb 2025 vs Ene–Feb 2026</p>
+  <table class="fin-table">
+    <thead>
+      <tr>
+        <th style="text-align:left">Concepto</th>
+        <th>Ene–Feb 2025</th>
+        <th>Ene–Feb 2026</th>
+        <th>Var. $</th>
+        <th>Var. %</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="section-row"><td colspan="5">Ingresos</td></tr>
+      <tr><td>Cuotas de Mantenimiento</td><td>$333,868</td><td>$324,860</td><td class="delta-neg">($9,008)</td><td class="delta-neg">-2.7%</td></tr>
+      <tr><td>Casa club</td><td>$13,800</td><td>$4,600</td><td class="delta-neg">($9,200)</td><td class="delta-neg">-66.7%</td></tr>
+      <tr><td>Otros</td><td>$1,920</td><td>$200</td><td class="delta-neg">($1,720)</td><td class="delta-neg">-89.6%</td></tr>
+      <tr class="highlight"><td>TOTAL INGRESOS</td><td>$349,588</td><td>$329,660</td><td class="delta-neg">($19,928)</td><td class="delta-neg">-5.7%</td></tr>
 
-    <!-- ── PRESENTACIÓN 1 — edita este bloque para cada nueva ── -->
-    <a class="card" href="./presentacion-1/index.html">
-      <span class="card-number">01</span>
-      <div class="card-title">Nombre de tu presentación</div>
-      <p class="card-desc">Breve descripción del contenido o propósito de esta presentación.</p>
-      <div class="card-footer">
-        <span class="tag">2024</span>
-        <span class="arrow">→</span>
-      </div>
-    </a>
+      <tr class="section-row"><td colspan="5">Gastos Ordinarios</td></tr>
+      <tr><td>Mantenimiento El Condado</td><td>$0</td><td>$100,800</td><td class="delta-neg">($100,800)</td><td>—</td></tr>
+      <tr><td>Agua Potable</td><td>$44,893</td><td>$62,839</td><td class="delta-neg">($17,946)</td><td class="delta-neg">+40.0%</td></tr>
+      <tr><td>Vigilancia</td><td>$61,494</td><td>$67,280</td><td class="delta-neg">($5,786)</td><td class="delta-neg">+9.4%</td></tr>
+      <tr><td>Jardinería / Conserje</td><td>$23,316</td><td>$24,940</td><td class="delta-neg">($1,624)</td><td class="delta-neg">+7.0%</td></tr>
+      <tr><td>Administración Externa</td><td>$21,621</td><td>$31,320</td><td class="delta-neg">($9,699)</td><td class="delta-neg">+44.9%</td></tr>
+      <tr><td>Energía Eléctrica</td><td>$7,905</td><td>$16,670</td><td class="delta-neg">($8,765)</td><td class="delta-neg">+110.9%</td></tr>
+      <tr><td>Recolección Basura</td><td>$10,726</td><td>$11,522</td><td class="delta-neg">($796)</td><td class="delta-neg">+7.4%</td></tr>
+      <tr><td>Alberca</td><td>$9,350</td><td>$0</td><td class="delta-pos">$9,350</td><td class="delta-pos">—</td></tr>
+      <tr class="highlight"><td>TOTAL GASTOS ORDINARIOS</td><td>$180,303</td><td>$319,018</td><td class="delta-neg">($138,715)</td><td class="delta-neg">+76.9%</td></tr>
 
-    <!-- ── NUEVA PRESENTACIÓN — copia el bloque de arriba y ajusta ──
-    <a class="card" href="./presentacion-2/index.html">
-      <span class="card-number">02</span>
-      <div class="card-title">Segunda presentación</div>
-      <p class="card-desc">Descripción aquí.</p>
-      <div class="card-footer">
-        <span class="tag">2025</span>
-        <span class="arrow">→</span>
-      </div>
-    </a>
-    -->
+      <tr class="section-row"><td colspan="5">Gastos Extraordinarios (Variables)</td></tr>
+      <tr><td>Cámaras de Seguridad</td><td>$1,531</td><td>$14,616</td><td class="delta-neg">($13,085)</td><td class="delta-neg">+854.7%</td></tr>
+      <tr><td>Pago Contribución / Derechos</td><td>$3,337</td><td>$48</td><td class="delta-pos">$3,289</td><td class="delta-pos">-98.6%</td></tr>
+      <tr><td>Mantenimientos</td><td>$2,405</td><td>$2,575</td><td class="delta-neg">($170)</td><td class="delta-neg">+7.1%</td></tr>
+      <tr><td>Luminarias</td><td>$4,988</td><td>$0</td><td class="delta-pos">$4,988</td><td class="delta-pos">—</td></tr>
+      <tr><td>Sistemas - Programas</td><td>$15,950</td><td>$0</td><td class="delta-pos">$15,950</td><td class="delta-pos">—</td></tr>
+      <tr class="highlight"><td>SUBTOTAL GASTOS VARIABLES</td><td>$28,212</td><td>$17,239</td><td class="delta-pos">$10,973</td><td class="delta-pos">-38.9%</td></tr>
 
-    <!-- Placeholder: próxima presentación -->
-    <div class="card card-add">
-      <div class="plus">+</div>
-      <span>Próxima presentación</span>
-    </div>
+      <tr class="highlight" style="border-top: 1px solid #ccc;"><td>TOTAL DE GASTOS</td><td>$208,514</td><td>$336,257</td><td class="delta-neg">($127,743)</td><td class="delta-neg">+61.2%</td></tr>
+      <tr class="highlight"><td>SALDO FINAL EN BANCO</td><td>$299,860</td><td>$185,508</td><td class="delta-neg">($114,352)</td><td class="delta-neg">-38.1%</td></tr>
+    </tbody>
+  </table>
 
+  <p class="section-label">Gráfico 1 — Comparativo Ingresos, Gastos y Saldo</p>
+  <div class="legend">
+    <span><span class="dot" style="background:#185FA5"></span>Ene–Feb 2025</span>
+    <span><span class="dot" style="background:#D85A30"></span>Ene–Feb 2026</span>
   </div>
+  <div class="chart-wrap"><canvas id="chart1"></canvas></div>
 
-  <footer>
-    <span>github.io · mis-presentaciones</span>
-    <span id="fecha"></span>
-  </footer>
+  <p class="section-label">Gráfico 2 — Distribución del ingreso total 2025: ordinario vs extraordinario vs remanente</p>
+  <div class="legend">
+    <span><span class="dot" style="background:#185FA5"></span>Gastos Ordinarios — $1,875,509 (91.9%)</span>
+    <span><span class="dot" style="background:#EF9F27"></span>Gastos Extraordinarios — $131,906 (6.5%)</span>
+    <span><span class="dot" style="background:#1D9E75"></span>Remanente — $33,318 (1.6%)</span>
+  </div>
+  <div class="chart-wrap" style="height:320px;"><canvas id="chart2"></canvas></div>
 
+  <div class="footer">Fuente: Flujo_de_efectivo.xlsx · El Condado · Generado con análisis financiero estratégico</div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
   <script>
-    // Cuenta automática de cards activas (excluye el placeholder)
-    const cards = document.querySelectorAll('.card:not(.card-add)');
-    document.getElementById('count').textContent =
-      String(cards.length).padStart(2, '0');
+    new Chart(document.getElementById('chart1'), {
+      type: 'bar',
+      data: {
+        labels: ['Total Ingresos', 'Total Gastos', 'Saldo Final en Banco'],
+        datasets: [
+          { label: 'Ene–Feb 2025', data: [349588, 208514, 299860], backgroundColor: '#185FA5', borderRadius: 4 },
+          { label: 'Ene–Feb 2026', data: [329660, 336257, 185508], backgroundColor: '#D85A30', borderRadius: 4 }
+        ]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { grid: { display: false }, ticks: { font: { size: 12 } } },
+          y: { grid: { color: 'rgba(128,128,128,0.12)' }, ticks: { font: { size: 11 }, callback: v => '$' + (v/1000).toFixed(0) + 'k' } }
+        }
+      }
+    });
 
-    // Fecha actual en el footer
-    document.getElementById('fecha').textContent =
-      new Date().toLocaleDateString('es-MX', { year: 'numeric', month: 'long' });
+    new Chart(document.getElementById('chart2'), {
+      type: 'pie',
+      data: {
+        labels: ['Gastos Ordinarios', 'Gastos Extraordinarios', 'Remanente'],
+        datasets: [{
+          data: [1875509, 131906, 33318],
+          backgroundColor: ['#185FA5', '#EF9F27', '#1D9E75'],
+          borderColor: 'transparent',
+          borderWidth: 0,
+          hoverOffset: 8
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: ctx => {
+                const v = ctx.raw;
+                const pct = ((v / 2040733) * 100).toFixed(1);
+                return ' $' + v.toLocaleString('es-MX') + '  (' + pct + '%)';
+              }
+            }
+          }
+        }
+      }
+    });
   </script>
 
 </body>

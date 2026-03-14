@@ -1,0 +1,48 @@
+
+<style>
+  .section-label { font-size: 12px; font-weight: 500; color: var(--color-text-secondary); letter-spacing: 0.04em; margin: 0.5rem 0; text-transform: uppercase; }
+  .legend { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 8px; font-size: 12px; color: var(--color-text-secondary); }
+  .legend span { display: flex; align-items: center; gap: 5px; }
+  .legend .dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+</style>
+
+<p class="section-label">Gráfico 2 — Distribución del ingreso total 2025: ordinario vs extraordinario vs remanente</p>
+<div class="legend">
+  <span><span class="dot" style="background:#185FA5"></span>Gastos Ordinarios — $1,875,509 (91.9%)</span>
+  <span><span class="dot" style="background:#EF9F27"></span>Gastos Extraordinarios — $131,906 (6.5%)</span>
+  <span><span class="dot" style="background:#1D9E75"></span>Remanente — $33,318 (1.6%)</span>
+</div>
+<div style="position:relative; width:100%; height:320px;"><canvas id="chart2pie"></canvas></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+new Chart(document.getElementById('chart2pie'), {
+  type: 'pie',
+  data: {
+    labels: ['Gastos Ordinarios', 'Gastos Extraordinarios', 'Remanente'],
+    datasets: [{
+      data: [1875509, 131906, 33318],
+      backgroundColor: ['#185FA5', '#EF9F27', '#1D9E75'],
+      borderColor: 'transparent',
+      borderWidth: 0,
+      hoverOffset: 8
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: ctx => {
+            const v = ctx.raw;
+            const pct = ((v / 2040733) * 100).toFixed(1);
+            return ' $' + v.toLocaleString('es-MX') + '  (' + pct + '%)';
+          }
+        }
+      }
+    }
+  }
+});
+</script>

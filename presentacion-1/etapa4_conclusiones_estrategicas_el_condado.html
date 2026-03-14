@@ -1,0 +1,130 @@
+
+<style>
+  .report { max-width: 100%; font-size: 13px; line-height: 1.65; }
+  .report-header { border-bottom: 1px solid var(--color-border-secondary); padding-bottom: 14px; margin-bottom: 20px; }
+  .report-title { font-size: 17px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 4px; }
+  .report-meta { font-size: 11px; color: var(--color-text-tertiary); }
+  .section-label { font-size: 11px; font-weight: 500; color: var(--color-text-tertiary); letter-spacing: 0.07em; text-transform: uppercase; margin: 1.5rem 0 0.75rem; }
+  .point-card { border-left: 3px solid var(--color-border-secondary); padding: 12px 16px; margin-bottom: 10px; background: var(--color-background-secondary); border-radius: 0 8px 8px 0; }
+  .point-card.critical { border-left-color: #D85A30; }
+  .point-card.warning  { border-left-color: #EF9F27; }
+  .point-card.info     { border-left-color: #185FA5; }
+  .point-title { font-size: 13px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 5px; }
+  .point-body  { font-size: 12px; color: var(--color-text-secondary); line-height: 1.6; }
+  .health-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; margin-bottom: 10px; }
+  .health-card { background: var(--color-background-secondary); border-radius: 8px; padding: 12px 14px; }
+  .health-label { font-size: 11px; color: var(--color-text-tertiary); margin-bottom: 3px; }
+  .health-value { font-size: 18px; font-weight: 500; }
+  .health-value.red  { color: #D85A30; }
+  .health-value.amber { color: #BA7517; }
+  .health-value.green { color: #1D9E75; }
+  .health-sub { font-size: 11px; color: var(--color-text-secondary); margin-top: 2px; }
+  .rec-card { display: flex; gap: 12px; padding: 12px 14px; border: 0.5px solid var(--color-border-tertiary); border-radius: 8px; margin-bottom: 8px; }
+  .rec-num { font-size: 18px; font-weight: 500; color: var(--color-text-tertiary); min-width: 24px; }
+  .rec-content { flex: 1; }
+  .rec-title { font-size: 13px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 3px; }
+  .rec-body  { font-size: 12px; color: var(--color-text-secondary); line-height: 1.6; }
+  .badge { display: inline-block; font-size: 10px; font-weight: 500; padding: 2px 8px; border-radius: 4px; margin-left: 6px; vertical-align: middle; }
+  .badge.urgent   { background: #FAECE7; color: #993C1D; }
+  .badge.medium   { background: #FAEEDA; color: #854F0B; }
+  .badge.low      { background: #EAF3DE; color: #3B6D11; }
+  .divider { border: none; border-top: 0.5px solid var(--color-border-tertiary); margin: 1.5rem 0; }
+</style>
+
+<div class="report">
+  <div class="report-header">
+    <div class="report-title">Executive Summary — Análisis Financiero El Condado 2025</div>
+    <div class="report-meta">Periodo analizado: Feb 2025 – Feb 2026 · Basado en flujo de efectivo bimestral</div>
+  </div>
+
+  <p class="section-label">1. Tres puntos críticos — Comparativa 2025 vs 2026</p>
+
+  <div class="point-card critical">
+    <div class="point-title">Los gastos del 1er bimestre 2026 ya superan los ingresos por primera vez</div>
+    <div class="point-body">En el Bim 1 de 2025, el condominio operó con un superávit de $141,074 ($349K ingresos vs $208K gastos). En el mismo periodo de 2026, los gastos ($336,257) superan los ingresos ($329,660) por $6,597 — un giro estructural que, de mantenerse, agotará las reservas en 2–3 bimestres. El detonador: Mantenimiento El Condado pasó de $0 a $100,800 y la Energía Eléctrica se duplicó (+110.9%).</div>
+  </div>
+
+  <div class="point-card warning">
+    <div class="point-title">El saldo en banco cayó 38.1% en un solo bimestre comparado contra 2025</div>
+    <div class="point-body">El saldo de cierre del Bim 1 pasó de $299,860 (2025) a $185,508 (2026), una erosión de $114,352 en doce meses. Esto refleja que el año 2025 completo drenó las reservas: el saldo inicial fue $158,786 y el final $192,105 — apenas $33,319 de remanente tras $2.04M en ingresos, lo que equivale a un margen operativo de solo 1.6%.</div>
+  </div>
+
+  <div class="point-card info">
+    <div class="point-title">Los ingresos son rígidos a la baja mientras los gastos son volátiles al alza</div>
+    <div class="point-body">Las cuotas de mantenimiento (97–99% del ingreso total) muestran poca variación bimestral, con un rango de $293K–$357K en 2025. En cambio, los gastos oscilan entre $208K y $417K — un rango 2x mayor. Esta asimetría hace imposible absorber picos de gasto sin erosionar el saldo. La ausencia de una reserva de contingencia estructurada es el riesgo financiero principal.</div>
+  </div>
+
+  <hr class="divider">
+  <p class="section-label">2. Salud financiera — Relación Gasto vs Saldo Final</p>
+
+  <div class="health-grid">
+    <div class="health-card">
+      <div class="health-label">Ratio Gasto/Ingreso 2025</div>
+      <div class="health-value amber">98.4%</div>
+      <div class="health-sub">Solo $0.016 de cada peso queda como reserva</div>
+    </div>
+    <div class="health-card">
+      <div class="health-label">Ratio Gasto/Ingreso Bim 1 2026</div>
+      <div class="health-value red">102.0%</div>
+      <div class="health-sub">Gasto ya supera al ingreso — zona de alerta</div>
+    </div>
+    <div class="health-card">
+      <div class="health-label">Meses de reserva disponibles</div>
+      <div class="health-value amber">~0.9 meses</div>
+      <div class="health-sub">Saldo $185,508 vs gasto mensual ~$200K</div>
+    </div>
+    <div class="health-card">
+      <div class="health-label">Tendencia del saldo 2025</div>
+      <div class="health-value red">Decreciente</div>
+      <div class="health-sub">Pico $434K (Abr) → $192K (Dic): -55.8%</div>
+    </div>
+  </div>
+
+  <div class="point-body" style="margin-top:8px; padding: 12px 14px; background: var(--color-background-secondary); border-radius: 8px;">
+    El condominio opera con reservas insuficientes para absorber un bimestre de gasto alto sin financiamiento externo. Con menos de 1 mes de gastos en banco y un ratio 2026 ya en territorio negativo, la salud financiera actual es <strong>frágil</strong>. El riesgo inmediato es no poder cubrir el siguiente pico de Mantenimiento El Condado (~$150K–$240K) sin descapitalizarse por completo.
+  </div>
+
+  <hr class="divider">
+  <p class="section-label">3. Recomendaciones para optimizar el flujo de efectivo</p>
+
+  <div class="rec-card">
+    <div class="rec-num">01</div>
+    <div class="rec-content">
+      <div class="rec-title">Establecer un fondo de reserva mínimo obligatorio <span class="badge urgent">Urgente</span></div>
+      <div class="rec-body">Fijar un saldo mínimo intocable equivalente a 2 bimestres de gasto promedio (~$380K). Hoy el saldo ($185K) no alcanza ni 1 bimestre. Esto requiere incrementar cuotas o generar ingresos extraordinarios (eventos, rentas de espacios comunes) para recapitalizar el fondo antes del Bim 3 2026, cuando históricamente llega el pico de gasto.</div>
+    </div>
+  </div>
+
+  <div class="rec-card">
+    <div class="rec-num">02</div>
+    <div class="rec-content">
+      <div class="rec-title">Presupuestar y calendarizar Mantenimiento El Condado con anticipación <span class="badge urgent">Urgente</span></div>
+      <div class="rec-body">Este rubro representa el 35.7% del gasto ordinario y su comportamiento es completamente irregular ($0 en Bim 1 2025 vs $242K en Bim 3). Negociar contratos anuales con pagos fijos bimestrales permitiría distribuir el impacto en el flujo de caja y eliminar los picos que drenan el saldo.</div>
+    </div>
+  </div>
+
+  <div class="rec-card">
+    <div class="rec-num">03</div>
+    <div class="rec-content">
+      <div class="rec-title">Auditar el consumo de Agua Potable y Energía Eléctrica <span class="badge medium">Medio plazo</span></div>
+      <div class="rec-body">Agua Potable mostró variaciones de 3x entre bimestres ($23K vs $74K), y Energía Eléctrica se duplicó en el Bim 1 2026. Ambos rubros sugieren posibles fugas, medidores sin revisión o contratos desactualizados. Una auditoría técnica podría reducir estos gastos entre un 15–30%, liberando entre $53K–$107K anuales.</div>
+    </div>
+  </div>
+
+  <div class="rec-card">
+    <div class="rec-num">04</div>
+    <div class="rec-content">
+      <div class="rec-title">Revisar cuota de mantenimiento para 2026 <span class="badge medium">Medio plazo</span></div>
+      <div class="rec-body">Con un ratio gasto/ingreso ya en 102% en el Bim 1 2026, la cuota actual es insuficiente para el nivel de gasto proyectado. Un incremento del 8–12% en cuotas generaría entre $159K–$238K adicionales anuales, suficiente para cubrir el déficit proyectado y comenzar a reconstruir reservas.</div>
+    </div>
+  </div>
+
+  <div class="rec-card">
+    <div class="rec-num">05</div>
+    <div class="rec-content">
+      <div class="rec-title">Implementar reporte mensual de alerta temprana <span class="badge low">Estructural</span></div>
+      <div class="rec-body">Definir dos indicadores de semáforo: (1) Saldo mínimo en banco < $250K = alerta amarilla, < $150K = alerta roja; (2) Ratio gasto/ingreso bimestral > 90% = revisión obligatoria del presupuesto. Estos umbrales permitirían tomar acciones correctivas antes de que el saldo llegue a niveles críticos, como ocurrió en Jul–Dic 2025.</div>
+    </div>
+  </div>
+
+</div>

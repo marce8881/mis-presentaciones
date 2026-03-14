@@ -1,0 +1,100 @@
+
+<style>
+  .section-label { font-size: 12px; font-weight: 500; color: var(--color-text-secondary); letter-spacing: 0.04em; margin: 1rem 0 0.5rem; text-transform: uppercase; }
+  .legend-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 24px; margin-bottom: 12px; font-size: 12px; color: var(--color-text-secondary); }
+  .legend-item { display: flex; align-items: center; gap: 6px; }
+  .dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+  .top3-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 1.5rem; }
+  .top3-card { background: var(--color-background-secondary); border-radius: 8px; padding: 14px 16px; }
+  .top3-rank { font-size: 11px; font-weight: 500; color: var(--color-text-tertiary); margin-bottom: 4px; }
+  .top3-name { font-size: 13px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 6px; }
+  .top3-amount { font-size: 20px; font-weight: 500; color: var(--color-text-primary); }
+  .top3-pct { font-size: 12px; color: var(--color-text-secondary); margin-top: 2px; }
+  .bar-bg { background: var(--color-border-tertiary); border-radius: 4px; height: 4px; margin-top: 8px; }
+  .bar-fill { height: 4px; border-radius: 4px; }
+</style>
+
+<p class="section-label">Gráfico — Distribución porcentual de Gastos Ordinarios 2025</p>
+<div class="legend-grid">
+  <span class="legend-item"><span class="dot" style="background:#185FA5"></span>Mantenimiento El Condado — 35.7%</span>
+  <span class="legend-item"><span class="dot" style="background:#D85A30"></span>Vigilancia — 19.1%</span>
+  <span class="legend-item"><span class="dot" style="background:#1D9E75"></span>Agua Potable — 15.8%</span>
+  <span class="legend-item"><span class="dot" style="background:#EF9F27"></span>Administración Externa — 8.8%</span>
+  <span class="legend-item"><span class="dot" style="background:#993556"></span>Jardinería / Conserje — 8.1%</span>
+  <span class="legend-item"><span class="dot" style="background:#534AB7"></span>Recolección Basura — 4.9%</span>
+  <span class="legend-item"><span class="dot" style="background:#0F6E56"></span>Alberca — 2.8%</span>
+  <span class="legend-item"><span class="dot" style="background:#854F0B"></span>Energía Eléctrica — 3.4%</span>
+  <span class="legend-item"><span class="dot" style="background:#888780"></span>Contabilidad — 1.1%</span>
+  <span class="legend-item"><span class="dot" style="background:#3B8BD4"></span>Internet — 0.3%</span>
+</div>
+<div style="position:relative; width:100%; height:300px;"><canvas id="donut"></canvas></div>
+
+<p class="section-label" style="margin-top:1.5rem;">Top 3 rubros con mayor impacto en el flujo de caja</p>
+<div class="top3-grid">
+  <div class="top3-card">
+    <div class="top3-rank">#1 mayor gasto</div>
+    <div class="top3-name">Mantenimiento El Condado</div>
+    <div class="top3-amount">$669,600</div>
+    <div class="top3-pct">35.7% del total ordinario</div>
+    <div class="bar-bg"><div class="bar-fill" style="width:100%; background:#185FA5"></div></div>
+  </div>
+  <div class="top3-card">
+    <div class="top3-rank">#2 mayor gasto</div>
+    <div class="top3-name">Vigilancia</div>
+    <div class="top3-amount">$358,468</div>
+    <div class="top3-pct">19.1% del total ordinario</div>
+    <div class="bar-bg"><div class="bar-fill" style="width:53%; background:#D85A30"></div></div>
+  </div>
+  <div class="top3-card">
+    <div class="top3-rank">#3 mayor gasto</div>
+    <div class="top3-name">Agua Potable</div>
+    <div class="top3-amount">$295,897</div>
+    <div class="top3-pct">15.8% del total ordinario</div>
+    <div class="bar-bg"><div class="bar-fill" style="width:44%; background:#1D9E75"></div></div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+new Chart(document.getElementById('donut'), {
+  type: 'doughnut',
+  data: {
+    labels: [
+      'Mantenimiento El Condado',
+      'Vigilancia',
+      'Agua Potable',
+      'Administración Externa',
+      'Jardinería / Conserje',
+      'Recolección Basura',
+      'Energía Eléctrica',
+      'Alberca',
+      'Contabilidad',
+      'Internet'
+    ],
+    datasets: [{
+      data: [669600, 358468, 295897, 165216, 151008, 92394, 63956, 52640, 21047, 5283],
+      backgroundColor: ['#185FA5','#D85A30','#1D9E75','#EF9F27','#993556','#534AB7','#854F0B','#0F6E56','#888780','#3B8BD4'],
+      borderColor: 'transparent',
+      borderWidth: 0,
+      hoverOffset: 10
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    cutout: '62%',
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: ctx => {
+            const v = ctx.raw;
+            const pct = ((v / 1875509) * 100).toFixed(1);
+            return ' $' + v.toLocaleString('es-MX') + '  (' + pct + '%)';
+          }
+        }
+      }
+    }
+  }
+});
+</script>

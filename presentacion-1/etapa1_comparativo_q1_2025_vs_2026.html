@@ -1,0 +1,166 @@
+
+<style>
+  .fin-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 1.5rem; }
+  .fin-table th { font-weight: 500; font-size: 12px; color: var(--color-text-secondary); text-align: right; padding: 8px 12px; border-bottom: 0.5px solid var(--color-border-tertiary); }
+  .fin-table th:first-child { text-align: left; }
+  .fin-table td { padding: 8px 12px; border-bottom: 0.5px solid var(--color-border-tertiary); text-align: right; font-variant-numeric: tabular-nums; }
+  .fin-table td:first-child { text-align: left; color: var(--color-text-secondary); }
+  .fin-table tr.highlight td { color: var(--color-text-primary); font-weight: 500; background: var(--color-background-secondary); }
+  .fin-table tr.highlight td:first-child { color: var(--color-text-primary); }
+  .delta-pos { color: #1D9E75; }
+  .delta-neg { color: #D85A30; }
+  .section-label { font-size: 12px; font-weight: 500; color: var(--color-text-secondary); letter-spacing: 0.04em; margin: 1.5rem 0 0.5rem; text-transform: uppercase; }
+  .chart-wrap { position: relative; width: 100%; }
+  .legend { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 8px; font-size: 12px; color: var(--color-text-secondary); }
+  .legend span { display: flex; align-items: center; gap: 5px; }
+  .legend .dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+</style>
+
+<p class="section-label">Tabla comparativa — 1er bimestre 2025 vs 2026</p>
+<table class="fin-table">
+  <thead>
+    <tr>
+      <th style="text-align:left">Concepto</th>
+      <th>Ene–Feb 2025</th>
+      <th>Ene–Feb 2026</th>
+      <th>Var. $</th>
+      <th>Var. %</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td colspan="5" style="padding:4px 12px; font-size:11px; color:var(--color-text-tertiary); font-weight:500;">INGRESOS</td></tr>
+    <tr><td>Cuotas de Mantenimiento</td><td>$333,868</td><td>$324,860</td><td class="delta-neg">($9,008)</td><td class="delta-neg">-2.7%</td></tr>
+    <tr><td>Casa club</td><td>$13,800</td><td>$4,600</td><td class="delta-neg">($9,200)</td><td class="delta-neg">-66.7%</td></tr>
+    <tr><td>Otros</td><td>$1,920</td><td>$200</td><td class="delta-neg">($1,720)</td><td class="delta-neg">-89.6%</td></tr>
+    <tr class="highlight"><td>TOTAL INGRESOS</td><td>$349,588</td><td>$329,660</td><td class="delta-neg">($19,928)</td><td class="delta-neg">-5.7%</td></tr>
+    <tr><td colspan="5" style="padding:4px 12px; font-size:11px; color:var(--color-text-tertiary); font-weight:500;">GASTOS ORDINARIOS</td></tr>
+    <tr><td>Mantenimiento El Condado</td><td>$0</td><td>$100,800</td><td class="delta-neg">($100,800)</td><td>—</td></tr>
+    <tr><td>Agua Potable</td><td>$44,893</td><td>$62,839</td><td class="delta-neg">($17,946)</td><td class="delta-neg">+40.0%</td></tr>
+    <tr><td>Vigilancia</td><td>$61,494</td><td>$67,280</td><td class="delta-neg">($5,786)</td><td class="delta-neg">+9.4%</td></tr>
+    <tr><td>Jardinería / Conserje</td><td>$23,316</td><td>$24,940</td><td class="delta-neg">($1,624)</td><td class="delta-neg">+7.0%</td></tr>
+    <tr><td>Administración Externa</td><td>$21,621</td><td>$31,320</td><td class="delta-neg">($9,699)</td><td class="delta-neg">+44.9%</td></tr>
+    <tr><td>Energía Eléctrica</td><td>$7,905</td><td>$16,670</td><td class="delta-neg">($8,765)</td><td class="delta-neg">+110.9%</td></tr>
+    <tr><td>Recolección Basura</td><td>$10,726</td><td>$11,522</td><td class="delta-neg">($796)</td><td class="delta-neg">+7.4%</td></tr>
+    <tr><td>Alberca</td><td>$9,350</td><td>$0</td><td class="delta-pos">$9,350</td><td class="delta-pos">—</td></tr>
+    <tr class="highlight"><td>TOTAL GASTOS ORDINARIOS</td><td>$180,303</td><td>$319,018</td><td class="delta-neg">($138,715)</td><td class="delta-neg">+76.9%</td></tr>
+    <tr><td colspan="5" style="padding:4px 12px; font-size:11px; color:var(--color-text-tertiary); font-weight:500;">GASTOS EXTRAORDINARIOS (VARIABLES)</td></tr>
+    <tr><td>Cámaras de Seguridad</td><td>$1,531</td><td>$14,616</td><td class="delta-neg">($13,085)</td><td class="delta-neg">+854.7%</td></tr>
+    <tr><td>Pago Contribución / Derechos</td><td>$3,337</td><td>$48</td><td class="delta-pos">$3,289</td><td class="delta-pos">-98.6%</td></tr>
+    <tr><td>Mantenimientos</td><td>$2,405</td><td>$2,575</td><td class="delta-neg">($170)</td><td class="delta-neg">+7.1%</td></tr>
+    <tr><td>Luminarias</td><td>$4,988</td><td>$0</td><td class="delta-pos">$4,988</td><td class="delta-pos">—</td></tr>
+    <tr><td>Sistemas - Programas</td><td>$15,950</td><td>$0</td><td class="delta-pos">$15,950</td><td class="delta-pos">—</td></tr>
+    <tr class="highlight"><td>SUBTOTAL GASTOS VARIABLES</td><td>$28,212</td><td>$17,239</td><td class="delta-pos">$10,973</td><td class="delta-pos">-38.9%</td></tr>
+    <tr class="highlight" style="border-top: 1px solid var(--color-border-secondary);"><td>TOTAL DE GASTOS</td><td>$208,514</td><td>$336,257</td><td class="delta-neg">($127,743)</td><td class="delta-neg">+61.2%</td></tr>
+    <tr class="highlight"><td>SALDO FINAL EN BANCO</td><td>$299,860</td><td>$185,508</td><td class="delta-neg">($114,352)</td><td class="delta-neg">-38.1%</td></tr>
+  </tbody>
+</table>
+
+<p class="section-label">Gráfico 1 — Comparativo Ingresos, Gastos y Saldo</p>
+<div class="legend">
+  <span><span class="dot" style="background:#185FA5"></span>Ene–Feb 2025</span>
+  <span><span class="dot" style="background:#D85A30"></span>Ene–Feb 2026</span>
+</div>
+<div class="chart-wrap" style="height:300px"><canvas id="chart1"></canvas></div>
+
+<p class="section-label" style="margin-top:2rem;">Gráfico 2 — Distribución del gasto total 2025: ordinario vs extraordinario</p>
+<div class="legend">
+  <span><span class="dot" style="background:#185FA5"></span>Gastos Ordinarios $1,875,509 (93.4%)</span>
+  <span><span class="dot" style="background:#EF9F27"></span>Gastos Extraordinarios $131,906 (6.6%)</span>
+  <span><span class="dot" style="background:#1D9E75"></span>Ingresos No Gastados $33,319 (1.7%)</span>
+</div>
+<div class="chart-wrap" style="height:320px"><canvas id="chart2"></canvas></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+new Chart(document.getElementById('chart1'), {
+  type: 'bar',
+  data: {
+    labels: ['Total Ingresos', 'Total Gastos', 'Saldo Final en Banco'],
+    datasets: [
+      {
+        label: 'Ene–Feb 2025',
+        data: [349588, 208514, 299860],
+        backgroundColor: '#185FA5',
+        borderRadius: 4,
+      },
+      {
+        label: 'Ene–Feb 2026',
+        data: [329660, 336257, 185508],
+        backgroundColor: '#D85A30',
+        borderRadius: 4,
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { grid: { display: false }, ticks: { font: { size: 12 } } },
+      y: {
+        grid: { color: 'rgba(128,128,128,0.12)' },
+        ticks: {
+          font: { size: 11 },
+          callback: v => '$' + (v/1000).toFixed(0) + 'k'
+        }
+      }
+    }
+  }
+});
+
+new Chart(document.getElementById('chart2'), {
+  type: 'bar',
+  data: {
+    labels: ['Total 2025 — $2,040,733 en Ingresos'],
+    datasets: [
+      {
+        label: 'Gastos Ordinarios',
+        data: [1875509],
+        backgroundColor: '#185FA5',
+        borderRadius: 0,
+      },
+      {
+        label: 'Gastos Extraordinarios',
+        data: [131906],
+        backgroundColor: '#EF9F27',
+        borderRadius: 0,
+      },
+      {
+        label: 'Remanente',
+        data: [33318],
+        backgroundColor: '#1D9E75',
+        borderRadius: 4,
+      }
+    ]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: ctx => {
+            const v = ctx.raw;
+            const pct = ((v/2040733)*100).toFixed(1);
+            return ' $' + v.toLocaleString('es-MX') + '  (' + pct + '%)';
+          }
+        }
+      }
+    },
+    scales: {
+      x: {
+        stacked: true,
+        grid: { color: 'rgba(128,128,128,0.12)' },
+        ticks: { font: { size: 11 }, callback: v => '$' + (v/1000000).toFixed(1) + 'M' }
+      },
+      y: {
+        stacked: true,
+        grid: { display: false },
+        ticks: { font: { size: 12 } }
+      }
+    }
+  }
+});
+</script>

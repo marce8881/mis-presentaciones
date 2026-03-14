@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análisis del Flujo de Efectivo 2025-2026</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --coral: #E9A17C;
+            --naranja: #CC783B;
+            --gris-carbon: #727272;
+            --gris-suave: #D9D9D9;
+            --gris-medianoche: #3F3F3F;
+            --blanco: #FFFFFF;
+            --fondo: #F8F6F3;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(135deg, #F8F6F3 0%, #EFE9E2 100%);
+            color: var(--gris-medianoche);
+            line-height: 1.6;
+        }
+
+        .presentation-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* ===== PORTADA ===== */
+        .slide {
+            background: var(--blanco);
+            border-radius: 16px;
+            padding: 60px 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            page-break-inside: avoid;
+        }
+
+        .slide.cover {
+            background: linear-gradient(135deg, var(--coral) 0%, var(--naranja) 100%);
+            color: var(--blanco);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 500px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide.cover::before {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            top: -50px;
+            right: -50px;
+        }
+
+        .slide.cover::after {
+            content: '';
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 50%;
+            bottom: -30px;
+            left: -30px;
+        }
+
+        .cover-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cover-title {
+            font-size: 48px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            letter-spacing: -0.5px;
+        }
+
+        .cover-subtitle {
+            font-size: 24px;
+            font-weight: 300;
+            margin-bottom: 40px;
+            opacity: 0.95;
+        }
+
+        .cover-date {
+            font-size: 14px;
+            opacity: 0.85;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* ===== ENCABEZADOS DE SECCIÓN ===== */
+        .slide-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 32px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--coral);
+        }
+
+        .stage-number {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--coral) 0%, var(--naranja) 100%);
+            color: var(--blanco);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .slide-title {
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--gris-medianoche);
+            flex: 1;
+        }
+
+        .slide-subtitle {
+            font-size: 14px;
+            color: var(--gris-carbon);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 500;
+            margin-bottom: 24px;
+        }
+
+        /* ===== CONTENIDO ===== */
+        .section-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--naranja);
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            margin: 28px 0 16px;
+            display: block;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            margin: 24px 0;
+            background: linear-gradient(135deg, rgba(233, 161, 124, 0.05) 0%, rgba(204, 120, 59, 0.05) 100%);
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .chart-wrap {
+            position: relative;
+            width: 100%;
+            margin: 16px 0;
+        }
+
+        .chart-wrap canvas {
+            max-height: 350px;
+        }
+
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 16px;
+            font-size: 12px;
+            color: var(--gris-carbon);
+        }
+
+        .legend span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 3px;
+            flex-shrink: 0;
+        }
+
+        /* ===== TABLAS ===== */
+        .fin-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            margin: 20px 0;
+        }
+
+        .fin-table th {
+            font-weight: 600;
+            font-size: 11px;
+            color: var(--naranja);
+            text-align: right;
+            padding: 12px 8px;
+            border-bottom: 2px solid var(--coral);
+            background: rgba(233, 161, 124, 0.08);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .fin-table th:first-child {
+            text-align: left;
+        }
+
+        .fin-table td {
+            padding: 10px 8px;
+            border-bottom: 1px solid var(--gris-suave);
+            text-align: right;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .fin-table td:first-child {
+            text-align: left;
+            color: var(--gris-medianoche);
+            font-weight: 500;
+        }
+
+        .fin-table tr:hover {
+            background: rgba(233, 161, 124, 0.05);
+        }
+
+        .fin-table tr.highlight td {
+            background: linear-gradient(90deg, rgba(204, 120, 59, 0.08) 0%, transparent 100%);
+            font-weight: 600;
+            color: var(--gris-medianoche);
+        }
+
+        .delta-pos {
+            color: #1D9E75;
+            font-weight: 600;
+        }
+
+        .delta-neg {
+            color: #D85A30;
+            font-weight: 600;
+        }
+
+        /* ===== TARJETAS DE INSIGHTS ===== */
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+            margin: 24px 0;
+        }
+
+        .insight-card {
+            background: linear-gradient(135deg, #FFFFFF 0%, #F8F6F3 100%);
+            border: 1px solid var(--gris-suave);
+            border-left: 4px solid var(--coral);
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .insight-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(204, 120, 59, 0.15);
+            border-left-color: var(--naranja);
+        }
+
+        .insight-label {
+            font-size: 11px;
+            color: var(--gris-carbon);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .insight-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--naranja);
+            margin-bottom: 6px;
+        }
+
+        .insight-subtext {
+            font-size: 12px;
+            color: var(--gris-carbon);
+            line-height: 1.5;
+        }
+
+        /* ===== TOP 3 GRID ===== */
+        .top3-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin: 24px 0;
+        }
+
+        .top3-card {
+            background: linear-gradient(135deg, #FFFFFF 0%, #F8F6F3 100%);
+            border: 1px solid var(--gris-suave);
+            border-radius: 12px;
+            padding: 18px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .top3-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--coral) 0%, var(--naranja) 100%);
+        }
+
+        .top3-rank {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--coral);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+        .top3-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--gris-medianoche);
+            margin-bottom: 8px;
+        }
+
+        .top3-amount {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--naranja);
+            margin-bottom: 4px;
+        }
+
+        .top3-pct {
+            font-size: 11px;
+            color: var(--gris-carbon);
+            margin-bottom: 12px;
+        }
+
+        .bar-bg {
+            background: var(--gris-suave);
+            border-radius: 3px;
+            height: 6px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+
+        /* ===== TEXTO NARRATIVO ===== */
+        .narrative {
+            background: linear-gradient(135deg, rgba(233, 161, 124, 0.1) 0%, rgba(204, 120, 59, 0.05) 100%);
+            border-left: 4px solid var(--coral);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 24px 0;
+            font-size: 13px;
+            line-height: 1.8;
+            color: var(--gris-medianoche);
+        }
+
+        .narrative strong {
+            color: var(--naranja);
+            font-weight: 600;
+        }
+
+        /* ===== FOOTER ===== */
+        .slide-footer {
+            text-align: center;
+            padding-top: 32px;
+            border-top: 1px solid var(--gris-suave);
+            font-size: 12px;
+            color: var(--gris-carbon);
+            margin-top: 32px;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .slide {
+                padding: 40px 20px;
+            }
+
+            .cover-title {
+                font-size: 32px;
+            }
+
+            .cover-subtitle {
+                font-size: 18px;
+            }
+
+            .slide-title {
+                font-size: 22px;
+            }
+
+            .insights-grid,
+            .top3-grid,
+            .legend {
+                grid-template-columns: 1fr;
+            }
+
+            .fin-table {
+                font-size: 11px;
+            }
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+
+            .slide {
+                break-inside: avoid;
+                page-break-inside: avoid;
+                margin-bottom: 20mm;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+
+        <!-- ===== PORTADA ===== -->
+        <div class="slide cover">
+            <div class="cover-content">
+                <div class="cover-title">Análisis del Flujo de Efectivo</div>
+                <div class="cover-subtitle">2025–2026</div>
+                <div class="cover-date">Asambleas — El Condado</div>
+            </div>
+        </div>
+
+        <!-- ===== ETAPA 1: COMPARATIVO 2025 vs 2026 ===== -->
+        <div class="slide">
+            <div class="slide-header">
+                <div class="stage-number">1</div>
+                <div>
+                    <div class="slide-title">Comparativo 1er Bimestre</div>
+                    <div class="slide-subtitle">2025 vs 2026</div>
+                </div>
+            </div>
+
+            <p class="section-label">Tabla Comparativa — Ingresos, Gastos y Saldo</p>
+            <div class="chart-container">
+                <table class="fin-table">
+                    <thead>
+                        <tr>
+                            <th style="text-align:left">Concepto</th>
+                            <th>Ene–Feb 2025</th>
+                            <th>Ene–Feb 2026</th>
+                            <th>Variación $</th>
+                            <th>Variación %</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td colspan="5" style="padding:8px 12px; font-size:11px; color:var(--gris-carbon); font-weight:600; background: rgba(233, 161, 124, 0.08); text-transform: uppercase; letter-spacing: 0.5px;">INGRESOS</td></tr>
+                        <tr><td>Cuotas de Mantenimiento</td><td>$333,868</td><td>$324,860</td><td class="delta-neg">($9,008)</td><td class="delta-neg">-2.7%</td></tr>
+                        <tr><td>Casa club</td><td>$13,800</td><td>$4,600</td><td class="delta-neg">($9,200)</td><td class="delta-neg">-66.7%</td></tr>
+                        <tr><td>Otros</td><td>$1,920</td><td>$200</td><td class="delta-neg">($1,720)</td><td class="delta-neg">-89.6%</td></tr>
+                        <tr class="highlight"><td>TOTAL INGRESOS</td><td>$349,588</td><td>$329,660</td><td class="delta-neg">($19,928)</td><td class="delta-neg">-5.7%</td></tr>
+
+                        <tr><td colspan="5" style="padding:8px 12px; font-size:11px; color:var(--gris-carbon); font-weight:600; background: rgba(233, 161, 124, 0.08); text-transform: uppercase; letter-spacing: 0.5px;">GASTOS ORDINARIOS</td></tr>
+                        <tr><td>Mantenimiento El Condado</td><td>$0</td><td>$100,800</td><td class="delta-neg">($100,800)</td><td>NUEVO</td></tr>
+                        <tr><td>Agua Potable</td><td>$44,893</td><td>$62,839</td><td class="delta-neg">($17,946)</td><td class="delta-neg">+40.0%</td></tr>
+                        <tr><td>Vigilancia</td><td>$61,494</td><td>$67,280</td><td class="delta-neg">($5,786)</td><td class="delta-neg">+9.4%</td></tr>
+                        <tr><td>Administración Externa</td><td>$21,621</td><td>$31,320</td><td class="delta-neg">($9,699)</td><td class="delta-neg">+44.9%</td></tr>
+                        <tr><td>Energía Eléctrica</td><td>$7,905</td><td>$16,670</td><td class="delta-neg">($8,765)</td><td class="delta-neg">+110.9%</td></tr>
+                        <tr class="highlight"><td>TOTAL GASTOS ORDINARIOS</td><td>$180,303</td><td>$319,018</td><td class="delta-neg">($138,715)</td><td class="delta-neg">+76.9%</td></tr>
+
+                        <tr class="highlight"><td>TOTAL DE GASTOS</td><td>$208,514</td><td>$336,257</td><td class="delta-neg">($127,743)</td><td class="delta-neg">+61.2%</td></tr>
+                        <tr class="highlight"><td>SALDO FINAL EN BANCO</td><td>$299,860</td><td>$185,508</td><td class="delta-neg">($114,352)</td><td class="delta-neg">-38.1%</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p class="section-label">Gráfico 1 — Comparativo Ingresos, Gastos y Saldo</p>
+            <div class="chart-container">
+                <div class="legend">
+                    <span><span class="dot" style="background:#185FA5"></span>Ene–Feb 2025</span>
+                    <span><span class="dot" style="background:#D85A30"></span>Ene–Feb 2026</span>
+                </div>
+                <div class="chart-wrap" style="height:320px"><canvas id="chart1"></canvas></div>
+            </div>
+
+            <div class="insights-grid">
+                <div class="insight-card">
+                    <div class="insight-label">Caída de Ingresos</div>
+                    <div class="insight-value">-5.7%</div>
+                    <div class="insight-subtext">Menos cuotas, menos otros ingresos</div>
+                </div>
+                <div class="insight-card">
+                    <div class="insight-label">Aumento de Gastos</div>
+                    <div class="insight-value">+61.2%</div>
+                    <div class="insight-subtext">Nuevos servicios y aumentos</div>
+                </div>
+                <div class="insight-card">
+                    <div class="insight-label">Erosión del Saldo</div>
+                    <div class="insight-value">-38.1%</div>
+                    <div class="insight-subtext">Déficit crítico de $114K</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== ETAPA 2: DISTRIBUCIÓN DE GASTOS ===== -->
+        <div class="slide">
+            <div class="slide-header">
+                <div class="stage-number">2</div>
+                <div>
+                    <div class="slide-title">Distribución de Gastos Ordinarios</div>
+                    <div class="slide-subtitle">Análisis 2025</div>
+                </div>
+            </div>
+
+            <p class="section-label">Gráfico — Distribución Porcentual de Gastos Ordinarios 2025</p>
+            <div class="chart-container">
+                <div style="position:relative; width:100%; height:300px;"><canvas id="donut"></canvas></div>
+            </div>
+
+            <p class="section-label" style="margin-top:2rem;">Top 3 Rubros con Mayor Impacto</p>
+            <div class="top3-grid">
+                <div class="top3-card">
+                    <div class="top3-rank">🥇 #1 Mayor Gasto</div>
+                    <div class="top3-name">Mantenimiento El Condado</div>
+                    <div class="top3-amount">$669,600</div>
+                    <div class="top3-pct">35.7% del total ordinario</div>
+                    <div class="bar-bg"><div class="bar-fill" style="width:100%; background: linear-gradient(90deg, var(--coral) 0%, var(--naranja) 100%);"></div></div>
+                </div>
+                <div class="top3-card">
+                    <div class="top3-rank">🥈 #2 Mayor Gasto</div>
+                    <div class="top3-name">Vigilancia</div>
+                    <div class="top3-amount">$358,468</div>
+                    <div class="top3-pct">19.1% del total ordinario</div>
+                    <div class="bar-bg"><div class="bar-fill" style="width:53%; background: linear-gradient(90deg, #D85A30 0%, #D85A30 100%);"></div></div>
+                </div>
+                <div class="top3-card">
+                    <div class="top3-rank">🥉 #3 Mayor Gasto</div>
+                    <div class="top3-name">Agua Potable</div>
+                    <div class="top3-amount">$297,028</div>
+                    <div class="top3-pct">15.8% del total ordinario</div>
+                    <div class="bar-bg"><div class="bar-fill" style="width:44%; background: linear-gradient(90deg, #1D9E75 0%, #1D9E75 100%);"></div></div>
+                </div>
+            </div>
+
+            <div class="narrative">
+                <strong>Hallazgo clave:</strong> Estos tres conceptos representan el 70.6% de los gastos ordinarios. El Mantenimiento de El Condado es el mayor driver, siendo un gasto que no existía en bimestres anteriores. La optimización de estos rubros podría liberar recursos significativos.
+            </div>
+        </div>
+
+        <!-- ===== ETAPA 3: COMBO GASTOS Y SALDO ===== -->
+        <div class="slide">
+            <div class="slide-header">
+                <div class="stage-number">3</div>
+                <div>
+                    <div class="slide-title">Comportamiento Bimestral 2025</div>
+                    <div class="slide-subtitle">Gastos, Ingresos y Saldo Final</div>
+                </div>
+            </div>
+
+            <p class="section-label">Gráfico — Evolución Bimestral: Gastos vs Saldo en Banco</p>
+            <div class="chart-container">
+                <div class="legend">
+                    <span><span class="dot" style="background:#185FA5"></span>Gastos Totales (eje izq.)</span>
+                    <span><span class="dot" style="background:#EF9F27; opacity:0.7;"></span>Ingresos Totales (eje izq.)</span>
+                    <span><span class="dot" style="background:#D85A30; width: 18px; height: 3px; border-radius: 2px;"></span>Saldo Final en Banco (eje der.)</span>
+                </div>
+                <div class="chart-wrap" style="height:360px;"><canvas id="combo"></canvas></div>
+            </div>
+
+            <div class="insights-grid">
+                <div class="insight-card">
+                    <div class="insight-label">Bimestre Crítico</div>
+                    <div class="insight-value">$417,741</div>
+                    <div class="insight-subtext">Gasto máximo en Jul 2025 (Bim 4)</div>
+                </div>
+                <div class="insight-card">
+                    <div class="insight-label">Saldo Mínimo 2025</div>
+                    <div class="insight-value">$192,105</div>
+                    <div class="insight-subtext">Cierre de año — Dic 2025</div>
+                </div>
+                <div class="insight-card">
+                    <div class="insight-label">Caída Acumulada</div>
+                    <div class="insight-value">-35.9%</div>
+                    <div class="insight-subtext">Período Feb → Dic 2025</div>
+                </div>
+            </div>
+
+            <div class="narrative">
+                <strong>Tendencia alarmante:</strong> El saldo en banco disminuyó de manera consistente a lo largo de 2025, con picos de gasto en julio que presionaron aún más las reservas. Aunque los ingresos oscilan entre $297K–$364K bimestrales, los gastos frecuentemente superan estos valores, generando erosión continua del patrimonio.
+            </div>
+        </div>
+
+        <!-- ===== ETAPA 4: CONCLUSIONES ESTRATÉGICAS ===== -->
+        <div class="slide">
+            <div class="slide-header">
+                <div class="stage-number">4</div>
+                <div>
+                    <div class="slide-title">Conclusiones Estratégicas</div>
+                    <div class="slide-subtitle">Executive Summary</div>
+                </div>
+            </div>
+
+            <p class="section-label">Tres Puntos Críticos</p>
+
+            <div class="narrative" style="background: linear-gradient(135deg, rgba(216, 90, 48, 0.1) 0%, rgba(216, 90, 48, 0.05) 100%); border-left-color: #D85A30; margin-bottom: 16px;">
+                <strong style="color: #D85A30;">⚠️ Punto 1: Déficit Operacional en 2026</strong><br>
+                Por primera vez, los gastos del Bim 1 de 2026 ($336K) superan los ingresos ($330K) por $6.6K. Si esta tendencia persiste, agotará las reservas en 2–3 bimestres.
+            </div>
+
+            <div class="narrative" style="background: linear-gradient(135deg, rgba(216, 90, 48, 0.1) 0%, rgba(216, 90, 48, 0.05) 100%); border-left-color: #D85A30; margin-bottom: 16px;">
+                <strong style="color: #D85A30;">⚠️ Punto 2: Erosión Severa de Reservas</strong><br>
+                El saldo en banco cayó 38.1% en un solo bimestre (2025→2026). El año 2025 completo consumió $33.3K de remanente sobre $2.04M en ingresos — un margen operativo de apenas 1.6%.
+            </div>
+
+            <div class="narrative" style="background: linear-gradient(135deg, rgba(204, 120, 59, 0.1) 0%, rgba(204, 120, 59, 0.05) 100%); border-left-color: var(--naranja); margin-bottom: 16px;">
+                <strong style="color: var(--naranja);">⚡ Punto 3: Nuevos Costos Estructurales</strong><br>
+                Mantenimiento El Condado ($100.8K) y aumentos en energía eléctrica (+110.9%) son nuevos drivers de gasto no previstos. Estas son estructurales, no transitorias.
+            </div>
+
+            <p class="section-label" style="margin-top: 2rem;">Recomendaciones Inmediatas</p>
+
+            <div style="display: grid; gap: 12px;">
+                <div style="background: linear-gradient(135deg, #FFFFFF 0%, #F8F6F3 100%); border-left: 4px solid var(--coral); border-radius: 8px; padding: 16px; border-right: 1px solid var(--gris-suave);">
+                    <div style="font-weight: 600; color: var(--naranja); margin-bottom: 8px;">1. Auditoría de Costos Ordinarios</div>
+                    <div style="font-size: 12px; color: var(--gris-carbon); line-height: 1.6;">Revisar los acuerdos de servicios (Agua, Vigilancia, Administración) para identificar sobrecostos o ineficiencias. El 70.6% del gasto está concentrado en 3 conceptos.</div>
+                </div>
+
+                <div style="background: linear-gradient(135deg, #FFFFFF 0%, #F8F6F3 100%); border-left: 4px solid var(--coral); border-radius: 8px; padding: 16px; border-right: 1px solid var(--gris-suave);">
+                    <div style="font-weight: 600; color: var(--naranja); margin-bottom: 8px;">2. Aumento de Ingresos</div>
+                    <div style="font-size: 12px; color: var(--gris-carbon); line-height: 1.6;">Los ingresos cayeron 5.7% mientras los gastos subieron 61.2%. Estudiar aumento de cuotas de mantenimiento o nuevas fuentes de ingresos (Casa club, amenidades).</div>
+                </div>
+
+                <div style="background: linear-gradient(135deg, #FFFFFF 0%, #F8F6F3 100%); border-left: 4px solid var(--coral); border-radius: 8px; padding: 16px; border-right: 1px solid var(--gris-suave);">
+                    <div style="font-weight: 600; color: var(--naranja); margin-bottom: 8px;">3. Proyección de Flujo 2026</div>
+                    <div style="font-size: 12px; color: var(--gris-carbon); line-height: 1.6;">Establececer un plan de contingencia si la tendencia Bim 1 2026 se mantiene. Las reservas actuales ($185.5K) cubrirían apenas 2 bimestres de déficit.</div>
+                </div>
+            </div>
+
+            <div class="slide-footer">
+                <strong>Análisis Financiero — El Condado</strong> | Período: Feb 2025 – Feb 2026 | Basado en flujo de efectivo bimestral
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // ===== ETAPA 1: GRÁFICO 1 =====
+        new Chart(document.getElementById('chart1'), {
+            type: 'bar',
+            data: {
+                labels: ['Total Ingresos', 'Total Gastos', 'Saldo Final en Banco'],
+                datasets: [
+                    {
+                        label: 'Ene–Feb 2025',
+                        data: [349588, 208514, 299860],
+                        backgroundColor: '#185FA5',
+                        borderRadius: 6,
+                    },
+                    {
+                        label: 'Ene–Feb 2026',
+                        data: [329660, 336257, 185508],
+                        backgroundColor: '#D85A30',
+                        borderRadius: 6,
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    x: {
+                        grid: { display: false },
+                        ticks: { font: { size: 12, weight: 600 } }
+                    },
+                    y: {
+                        grid: { color: 'rgba(127, 127, 127, 0.08)' },
+                        ticks: {
+                            font: { size: 11 },
+                            callback: v => '$' + (v/1000).toFixed(0) + 'k'
+                        }
+                    }
+                }
+            }
+        });
+
+        // ===== ETAPA 2: GRÁFICO DONUT =====
+        new Chart(document.getElementById('donut'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Mantenimiento', 'Vigilancia', 'Agua', 'Admin', 'Jardinería', 'Basura', 'Energía', 'Alberca', 'Contabilidad', 'Internet'],
+                datasets: [{
+                    data: [669600, 358468, 297028, 168488, 151848, 92156, 63786, 52506, 20524, 5606],
+                    backgroundColor: ['#185FA5', '#D85A30', '#1D9E75', '#EF9F27', '#993556', '#534AB7', '#854F0B', '#0F6E56', '#888780', '#3B8BD4'],
+                    borderColor: '#FFFFFF',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'none'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: ctx => {
+                                const total = 1875509;
+                                const pct = ((ctx.raw / total) * 100).toFixed(1);
+                                return '$' + ctx.raw.toLocaleString('es-MX') + ' (' + pct + '%)';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // ===== ETAPA 3: GRÁFICO COMBO =====
+        const labels = ['Feb\n(Bim 1)', 'Abr\n(Bim 2)', 'Jun\n(Bim 3)', 'Jul\n(Bim 4)', 'Oct\n(Bim 5)', 'Dic\n(Bim 6)'];
+        const gastos = [208514, 223975, 410791, 417741, 360268, 386125];
+        const ingresos = [349588, 358291, 316526, 296143, 364372, 355812];
+        const saldo = [299860, 434176, 339911, 218314, 222418, 192105];
+
+        new Chart(document.getElementById('combo'), {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Gastos Totales',
+                        data: gastos,
+                        backgroundColor: '#185FA5',
+                        borderRadius: 4,
+                        yAxisID: 'y'
+                    },
+                    {
+                        label: 'Ingresos Totales',
+                        data: ingresos,
+                        backgroundColor: '#EF9F27',
+                        borderRadius: 4,
+                        yAxisID: 'y'
+                    },
+                    {
+                        label: 'Saldo Final en Banco',
+                        data: saldo,
+                        type: 'line',
+                        borderColor: '#D85A30',
+                        backgroundColor: 'transparent',
+                        borderWidth: 3,
+                        tension: 0.3,
+                        fill: false,
+                        yAxisID: 'y1',
+                        pointRadius: 5,
+                        pointBackgroundColor: '#D85A30',
+                        pointBorderColor: '#FFFFFF',
+                        pointBorderWidth: 2
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: { mode: 'index', intersect: false },
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        grid: { color: 'rgba(127, 127, 127, 0.08)' },
+                        ticks: {
+                            font: { size: 11 },
+                            callback: v => '$' + (v/1000).toFixed(0) + 'k'
+                        }
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        grid: { drawOnChartArea: false },
+                        ticks: {
+                            font: { size: 11 },
+                            callback: v => '$' + (v/1000).toFixed(0) + 'k'
+                        }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { font: { size: 11 } }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

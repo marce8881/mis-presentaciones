@@ -1,356 +1,194 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Mis Presentaciones</title>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    <meta charset="UTF-8">
+    <title>Panel de Pobreza en México (2008-2018)</title>
+    <!-- Carga de la API de Google Charts -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', {'packages':['corechart', 'bar']});
+        google.charts.setOnLoadCallback(drawAllCharts);
 
-    :root {
-      --bg: #0d0d0f;
-      --surface: #141416;
-      --border: rgba(255,255,255,0.07);
-      --accent: #e8ff47;
-      --accent-dim: rgba(232,255,71,0.12);
-      --text: #f0ede8;
-      --muted: #6b6865;
-      --tag-bg: rgba(255,255,255,0.05);
-    }
+        function drawAllCharts() {
+            drawChart1();
+            drawChart2();
+            drawChart3();
+            drawChart4();
+            drawChart5();
+        }
 
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      padding: 0 24px 80px;
-    }
+        // 1. Gráfico de Líneas: Evolución Nacional (Ajustado a Millones con Puntos y Etiquetas)
+        function drawChart1() {
+            var data = google.visualization.arrayToDataTable([
+                ['Año', 'Pobreza', {role: 'annotation'}, 'Pobreza Extrema', {role: 'annotation'}],
+                ['2008', 49.5, '49.5', 12.3, '12.3'],
+                ['2010', 52.8, '52.8', 13.0, '13.0'],
+                ['2012', 53.3, '53.3', 11.5, '11.5'],
+                ['2014', 55.3, '55.3', 11.4, '11.4'],
+                ['2016', 53.4, '53.4', 9.4, '9.4'],
+                ['2018', 52.4, '52.4', 9.3, '9.3']
+            ]);
+            var options = { 
+                title: 'Evolución Nacional de la Pobreza (2008-2018)',
+                vAxis: { title: 'Millones de personas', minValue: 0 },
+                hAxis: { title: 'Año' },
+                curveType: 'function',
+                pointSize: 6, // Puntos identificadores
+                legend: { position: 'bottom' },
+                colors: ['#264653', '#e76f51'] // Paleta Armónica
+            };
+            var chart = new google.visualization.LineChart(document.getElementById('chart1_div'));
+            chart.draw(data, options);
+        }
 
-    /* ── HEADER ── */
-    header {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 72px 0 56px;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      gap: 24px;
-    }
+        // 2. Gráfico Circular: Distribución con Total de Referencia
+        function drawChart2() {
+            var data = google.visualization.arrayToDataTable([
+                ['Indicador', 'Millones de Personas'],
+                ['Pobreza (Moderada y Extrema)', 52.4],
+                ['Vulnerables (Carencias sociales)', 36.7],
+                ['Vulnerables (Ingresos)', 8.6],
+                ['No pobre y no vulnerable', 27.4]
+            ]);
+            var options = { 
+                title: 'Distribución de la Población Nacional en 2018 \n(Total referente: 125.1 Millones de personas)', 
+                pieHole: 0.4, 
+                colors: ['#e76f51', '#f4a261', '#e9c46a', '#2a9d8f']
+            };
+            var chart = new google.visualization.PieChart(document.getElementById('chart2_div'));
+            chart.draw(data, options);
+        }
 
-    .header-left h1 {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(2.2rem, 5vw, 3.4rem);
-      font-weight: 800;
-      line-height: 1.05;
-      letter-spacing: -0.03em;
-      color: var(--text);
-    }
+        // 3. Gráfico de Barras: Muestra de Estados
+        function drawChart3() {
+            var data = google.visualization.arrayToDataTable([
+                ['Estado', '2008 (%)', '2018 (%)'],
+                ['Aguascalientes', 4.2, 1.2],
+                ['Baja California', 3.3, 1.6],
+                ['Campeche', 11.9, 9.8],
+                ['Coahuila', 3.1, 1.4],
+                ['Chiapas', 38.7, 29.7]
+            ]);
+            var options = { 
+                title: 'Pobreza Extrema: Entidades Seleccionadas (2008 vs 2018)', 
+                bars: 'horizontal',
+                colors: ['#e9c46a', '#e76f51']
+            };
+            var chart = new google.visualization.BarChart(document.getElementById('chart3_div'));
+            chart.draw(data, options);
+        }
 
-    .header-left h1 span {
-      color: var(--accent);
-    }
+// 4. Gráfico de Áreas: Evolución de Carencias
+        function drawChart4() {
+            var data = google.visualization.arrayToDataTable([
+                ['Año', 'Pobl. en Pobreza', 'Pobl. en Pobreza Extrema'],
+                ['2008', 2.8, 3.9],
+                ['2010', 2.6, 3.8],
+                ['2012', 2.4, 3.7],
+                ['2014', 2.3, 3.6],
+                ['2016', 2.2, 3.5],
+                ['2018', 2.2, 3.6]
+            ]);
+            var options = { 
+                title: 'Promedio de Carencias Sociales (2008-2018)', 
+                vAxis: { title: 'Promedio de carencias' }, // Título añadido al eje Y
+                hAxis: { title: 'Año' }, // Título añadido al eje X
+                isStacked: false,
+                colors: ['#264653', '#e76f51']
+            };
+            var chart = new google.visualization.AreaChart(document.getElementById('chart4_div'));
+            chart.draw(data, options);
+        }
 
-    .header-left p {
-      margin-top: 14px;
-      font-size: 0.95rem;
-      color: var(--muted);
-      font-weight: 300;
-      max-width: 380px;
-      line-height: 1.6;
-    }
-
-    .header-right {
-      font-size: 0.78rem;
-      color: var(--muted);
-      text-align: right;
-      white-space: nowrap;
-    }
-
-    .header-right .count {
-      font-family: 'Syne', sans-serif;
-      font-size: 2rem;
-      font-weight: 700;
-      color: var(--text);
-      display: block;
-      line-height: 1;
-    }
-
-    /* ── GRID ── */
-    .grid {
-      max-width: 900px;
-      margin: 56px auto 0;
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 20px;
-    }
-
-    /* ── CARD ── */
-    .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 28px 28px 24px;
-      text-decoration: none;
-      color: inherit;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      transition: border-color 0.2s, transform 0.2s, background 0.2s;
-      position: relative;
-      overflow: hidden;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeUp 0.5s forwards;
-    }
-
-    .card:nth-child(1) { animation-delay: 0.05s; }
-    .card:nth-child(2) { animation-delay: 0.12s; }
-    .card:nth-child(3) { animation-delay: 0.19s; }
-    .card:nth-child(4) { animation-delay: 0.26s; }
-    .card:nth-child(5) { animation-delay: 0.33s; }
-    .card:nth-child(6) { animation-delay: 0.40s; }
-
-    @keyframes fadeUp {
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .card::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: var(--accent-dim);
-      opacity: 0;
-      transition: opacity 0.25s;
-      border-radius: inherit;
-    }
-
-    .card:hover { border-color: var(--accent); transform: translateY(-3px); }
-    .card:hover::before { opacity: 1; }
-
-    .card-number {
-      font-family: 'Syne', sans-serif;
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      color: var(--accent);
-      text-transform: uppercase;
-    }
-
-    .card-title {
-      font-family: 'Syne', sans-serif;
-      font-size: 1.15rem;
-      font-weight: 700;
-      line-height: 1.3;
-      color: var(--text);
-    }
-
-    .card-desc {
-      font-size: 0.85rem;
-      color: var(--muted);
-      line-height: 1.6;
-      flex: 1;
-    }
-
-    .card-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-top: 4px;
-    }
-
-    .tag {
-      font-size: 0.72rem;
-      background: var(--tag-bg);
-      border: 1px solid var(--border);
-      color: var(--muted);
-      padding: 3px 10px;
-      border-radius: 99px;
-    }
-
-    .arrow {
-      width: 28px;
-      height: 28px;
-      border: 1px solid var(--border);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.85rem;
-      color: var(--muted);
-      transition: border-color 0.2s, color 0.2s, background 0.2s;
-    }
-
-    .card:hover .arrow {
-      border-color: var(--accent);
-      color: var(--accent);
-      background: var(--accent-dim);
-    }
-
-    /* ── ADD CARD (placeholder) ── */
-    .card-add {
-      border-style: dashed;
-      border-color: rgba(255,255,255,0.1);
-      background: transparent;
-      align-items: center;
-      justify-content: center;
-      min-height: 180px;
-      cursor: default;
-      gap: 8px;
-    }
-
-    .card-add:hover {
-      border-color: rgba(232,255,71,0.3);
-      background: rgba(232,255,71,0.03);
-      transform: none;
-    }
-
-    .card-add:hover::before { opacity: 0; }
-
-    .card-add .plus {
-      font-size: 1.6rem;
-      color: var(--muted);
-      font-weight: 300;
-      line-height: 1;
-      transition: color 0.2s;
-    }
-
-    .card-add:hover .plus { color: var(--accent); }
-
-    .card-add span {
-      font-size: 0.8rem;
-      color: var(--muted);
-      text-align: center;
-    }
-
-    /* ── FOOTER ── */
-    footer {
-      max-width: 900px;
-      margin: 64px auto 0;
-      padding-top: 24px;
-      border-top: 1px solid var(--border);
-      font-size: 0.78rem;
-      color: var(--muted);
-      display: flex;
-      justify-content: space-between;
-    }
-  </style>
+        // 5. Gráfico de Barras Horizontales: Todos los estados ordenados con destacados
+        function drawChart5() {
+            var data = google.visualization.arrayToDataTable([
+                ['Estado', 'Millones de Personas', { role: 'style' }, { role: 'annotation' }],
+                ['Chiapas', 1.62, 'color: #e76f51', '1.62'],
+                ['Veracruz', 1.46, 'color: #e76f51', '1.46'],
+                ['Guerrero', 0.97, 'color: #e76f51', '0.97'],
+                ['Oaxaca', 0.95, 'color: #e76f51', '0.95'],
+                ['México', 0.87, 'color: #e76f51', '0.87'],
+                ['Puebla', 0.55, 'color: #f2c7ba', ''],
+                ['Tabasco', 0.30, 'color: #f2c7ba', ''],
+                ['Michoacán', 0.28, 'color: #f2c7ba', ''],
+                ['Guanajuato', 0.25, 'color: #f2c7ba', ''],
+                ['Jalisco', 0.24, 'color: #f2c7ba', ''],
+                ['San Luis Potosí', 0.21, 'color: #f2c7ba', ''],
+                ['Hidalgo', 0.18, 'color: #f2c7ba', ''],
+                ['Ciudad de México', 0.15, 'color: #f2c7ba', ''],
+                ['Yucatán', 0.15, 'color: #f2c7ba', ''],
+                ['Morelos', 0.15, 'color: #f2c7ba', ''],
+                ['Tamaulipas', 0.12, 'color: #f2c7ba', ''],
+                ['Chihuahua', 0.10, 'color: #f2c7ba', ''],
+                ['Campeche', 0.09, 'color: #f2c7ba', ''],
+                ['Sinaloa', 0.08, 'color: #f2c7ba', ''],
+                ['Sonora', 0.08, 'color: #f2c7ba', ''],
+                ['Nayarit', 0.08, 'color: #f2c7ba', ''],
+                ['Quintana Roo', 0.06, 'color: #f2c7ba', ''],
+                ['Baja California', 0.06, 'color: #f2c7ba', ''],
+                ['Zacatecas', 0.05, 'color: #f2c7ba', ''],
+                ['Coahuila', 0.04, 'color: #f2c7ba', ''],
+                ['Tlaxcala', 0.04, 'color: #f2c7ba', ''],
+                ['Querétaro', 0.04, 'color: #f2c7ba', ''],
+                ['Durango', 0.04, 'color: #f2c7ba', ''],
+                ['Nuevo León', 0.03, 'color: #f2c7ba', ''],
+                ['Colima', 0.02, 'color: #f2c7ba', ''],
+                ['Aguascalientes', 0.02, 'color: #f2c7ba', ''],
+                ['Baja California Sur', 0.01, 'color: #f2c7ba', '']
+            ]);
+            var options = { 
+                title: 'Volumen de Pobreza Extrema por Estado en 2018 (Millones de Personas)', 
+                legend: { position: 'none' },
+                hAxis: { title: 'Millones de Personas' },
+                chartArea: { width: '65%', height: '85%' }
+            };
+            var chart = new google.visualization.BarChart(document.getElementById('chart5_div'));
+            chart.draw(data, options);
+        }
+    </script>
+    <style>
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 20px; 
+        }
+        h1 {
+            text-align: center;
+            color: #264653;
+            margin-bottom: 30px;
+        }
+        .dashboard { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 20px; 
+            justify-content: center; 
+        }
+        .chart-container { 
+            width: 48%; 
+            min-width: 500px;
+            height: 400px; 
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            padding: 10px;
+        }
+        /* Clase específica para hacer más alto el gráfico de 32 estados */
+        .chart-tall {
+            width: 98%;
+            height: 800px; 
+        }
+    </style>
 </head>
 <body>
-
-  <h1>Análisis General y Comparativo Q1 — El Condado</h1>
-  <p class="subtitle">1er Bimestre 2025 vs 1er Bimestre 2026 · Flujo de efectivo</p>
-
-  <p class="section-label">Tabla comparativa — Ene–Feb 2025 vs Ene–Feb 2026</p>
-  <table class="fin-table">
-    <thead>
-      <tr>
-        <th style="text-align:left">Concepto</th>
-        <th>Ene–Feb 2025</th>
-        <th>Ene–Feb 2026</th>
-        <th>Var. $</th>
-        <th>Var. %</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr class="section-row"><td colspan="5">Ingresos</td></tr>
-      <tr><td>Cuotas de Mantenimiento</td><td>$333,868</td><td>$324,860</td><td class="delta-neg">($9,008)</td><td class="delta-neg">-2.7%</td></tr>
-      <tr><td>Casa club</td><td>$13,800</td><td>$4,600</td><td class="delta-neg">($9,200)</td><td class="delta-neg">-66.7%</td></tr>
-      <tr><td>Otros</td><td>$1,920</td><td>$200</td><td class="delta-neg">($1,720)</td><td class="delta-neg">-89.6%</td></tr>
-      <tr class="highlight"><td>TOTAL INGRESOS</td><td>$349,588</td><td>$329,660</td><td class="delta-neg">($19,928)</td><td class="delta-neg">-5.7%</td></tr>
-
-      <tr class="section-row"><td colspan="5">Gastos Ordinarios</td></tr>
-      <tr><td>Mantenimiento El Condado</td><td>$0</td><td>$100,800</td><td class="delta-neg">($100,800)</td><td>—</td></tr>
-      <tr><td>Agua Potable</td><td>$44,893</td><td>$62,839</td><td class="delta-neg">($17,946)</td><td class="delta-neg">+40.0%</td></tr>
-      <tr><td>Vigilancia</td><td>$61,494</td><td>$67,280</td><td class="delta-neg">($5,786)</td><td class="delta-neg">+9.4%</td></tr>
-      <tr><td>Jardinería / Conserje</td><td>$23,316</td><td>$24,940</td><td class="delta-neg">($1,624)</td><td class="delta-neg">+7.0%</td></tr>
-      <tr><td>Administración Externa</td><td>$21,621</td><td>$31,320</td><td class="delta-neg">($9,699)</td><td class="delta-neg">+44.9%</td></tr>
-      <tr><td>Energía Eléctrica</td><td>$7,905</td><td>$16,670</td><td class="delta-neg">($8,765)</td><td class="delta-neg">+110.9%</td></tr>
-      <tr><td>Recolección Basura</td><td>$10,726</td><td>$11,522</td><td class="delta-neg">($796)</td><td class="delta-neg">+7.4%</td></tr>
-      <tr><td>Alberca</td><td>$9,350</td><td>$0</td><td class="delta-pos">$9,350</td><td class="delta-pos">—</td></tr>
-      <tr class="highlight"><td>TOTAL GASTOS ORDINARIOS</td><td>$180,303</td><td>$319,018</td><td class="delta-neg">($138,715)</td><td class="delta-neg">+76.9%</td></tr>
-
-      <tr class="section-row"><td colspan="5">Gastos Extraordinarios (Variables)</td></tr>
-      <tr><td>Cámaras de Seguridad</td><td>$1,531</td><td>$14,616</td><td class="delta-neg">($13,085)</td><td class="delta-neg">+854.7%</td></tr>
-      <tr><td>Pago Contribución / Derechos</td><td>$3,337</td><td>$48</td><td class="delta-pos">$3,289</td><td class="delta-pos">-98.6%</td></tr>
-      <tr><td>Mantenimientos</td><td>$2,405</td><td>$2,575</td><td class="delta-neg">($170)</td><td class="delta-neg">+7.1%</td></tr>
-      <tr><td>Luminarias</td><td>$4,988</td><td>$0</td><td class="delta-pos">$4,988</td><td class="delta-pos">—</td></tr>
-      <tr><td>Sistemas - Programas</td><td>$15,950</td><td>$0</td><td class="delta-pos">$15,950</td><td class="delta-pos">—</td></tr>
-      <tr class="highlight"><td>SUBTOTAL GASTOS VARIABLES</td><td>$28,212</td><td>$17,239</td><td class="delta-pos">$10,973</td><td class="delta-pos">-38.9%</td></tr>
-
-      <tr class="highlight" style="border-top: 1px solid #ccc;"><td>TOTAL DE GASTOS</td><td>$208,514</td><td>$336,257</td><td class="delta-neg">($127,743)</td><td class="delta-neg">+61.2%</td></tr>
-      <tr class="highlight"><td>SALDO FINAL EN BANCO</td><td>$299,860</td><td>$185,508</td><td class="delta-neg">($114,352)</td><td class="delta-neg">-38.1%</td></tr>
-    </tbody>
-  </table>
-
-  <p class="section-label">Gráfico 1 — Comparativo Ingresos, Gastos y Saldo</p>
-  <div class="legend">
-    <span><span class="dot" style="background:#185FA5"></span>Ene–Feb 2025</span>
-    <span><span class="dot" style="background:#D85A30"></span>Ene–Feb 2026</span>
-  </div>
-  <div class="chart-wrap"><canvas id="chart1"></canvas></div>
-
-  <p class="section-label">Gráfico 2 — Distribución del ingreso total 2025: ordinario vs extraordinario vs remanente</p>
-  <div class="legend">
-    <span><span class="dot" style="background:#185FA5"></span>Gastos Ordinarios — $1,875,509 (91.9%)</span>
-    <span><span class="dot" style="background:#EF9F27"></span>Gastos Extraordinarios — $131,906 (6.5%)</span>
-    <span><span class="dot" style="background:#1D9E75"></span>Remanente — $33,318 (1.6%)</span>
-  </div>
-  <div class="chart-wrap" style="height:320px;"><canvas id="chart2"></canvas></div>
-
-  <div class="footer">Fuente: Flujo_de_efectivo.xlsx · El Condado · Generado con análisis financiero estratégico</div>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
-  <script>
-    new Chart(document.getElementById('chart1'), {
-      type: 'bar',
-      data: {
-        labels: ['Total Ingresos', 'Total Gastos', 'Saldo Final en Banco'],
-        datasets: [
-          { label: 'Ene–Feb 2025', data: [349588, 208514, 299860], backgroundColor: '#185FA5', borderRadius: 4 },
-          { label: 'Ene–Feb 2026', data: [329660, 336257, 185508], backgroundColor: '#D85A30', borderRadius: 4 }
-        ]
-      },
-      options: {
-        responsive: true, maintainAspectRatio: false,
-        plugins: { legend: { display: false } },
-        scales: {
-          x: { grid: { display: false }, ticks: { font: { size: 12 } } },
-          y: { grid: { color: 'rgba(128,128,128,0.12)' }, ticks: { font: { size: 11 }, callback: v => '$' + (v/1000).toFixed(0) + 'k' } }
-        }
-      }
-    });
-
-    new Chart(document.getElementById('chart2'), {
-      type: 'pie',
-      data: {
-        labels: ['Gastos Ordinarios', 'Gastos Extraordinarios', 'Remanente'],
-        datasets: [{
-          data: [1875509, 131906, 33318],
-          backgroundColor: ['#185FA5', '#EF9F27', '#1D9E75'],
-          borderColor: 'transparent',
-          borderWidth: 0,
-          hoverOffset: 8
-        }]
-      },
-      options: {
-        responsive: true, maintainAspectRatio: false,
-        plugins: {
-          legend: { display: false },
-          tooltip: {
-            callbacks: {
-              label: ctx => {
-                const v = ctx.raw;
-                const pct = ((v / 2040733) * 100).toFixed(1);
-                return ' $' + v.toLocaleString('es-MX') + '  (' + pct + '%)';
-              }
-            }
-          }
-        }
-      }
-    });
-  </script>
-
+    <h1>Tablero Visual: 10 Años de Medición de Pobreza en México</h1>
+    <div class="dashboard">
+        <div id="chart1_div" class="chart-container"></div>
+        <div id="chart2_div" class="chart-container"></div>
+        <div id="chart3_div" class="chart-container"></div>
+        <div id="chart4_div" class="chart-container"></div>
+        <div id="chart5_div" class="chart-container chart-tall"></div> <!-- Contenedor ampliado -->
+    </div>
 </body>
 </html>

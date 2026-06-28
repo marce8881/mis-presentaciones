@@ -1,194 +1,633 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Panel de Pobreza en México (2008-2018)</title>
-    <!-- Carga de la API de Google Charts -->
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">
-        google.charts.load('current', {'packages':['corechart', 'bar']});
-        google.charts.setOnLoadCallback(drawAllCharts);
+<meta charset="UTF-8">
+<title>Dashboard Global Superstore 2016</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        function drawAllCharts() {
-            drawChart1();
-            drawChart2();
-            drawChart3();
-            drawChart4();
-            drawChart5();
-        }
+body {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: #F5F4F0;
+  min-height: 100vh;
+  padding: 20px 0 32px;
+}
 
-        // 1. Gráfico de Líneas: Evolución Nacional (Ajustado a Millones con Puntos y Etiquetas)
-        function drawChart1() {
-            var data = google.visualization.arrayToDataTable([
-                ['Año', 'Pobreza', {role: 'annotation'}, 'Pobreza Extrema', {role: 'annotation'}],
-                ['2008', 49.5, '49.5', 12.3, '12.3'],
-                ['2010', 52.8, '52.8', 13.0, '13.0'],
-                ['2012', 53.3, '53.3', 11.5, '11.5'],
-                ['2014', 55.3, '55.3', 11.4, '11.4'],
-                ['2016', 53.4, '53.4', 9.4, '9.4'],
-                ['2018', 52.4, '52.4', 9.3, '9.3']
-            ]);
-            var options = { 
-                title: 'Evolución Nacional de la Pobreza (2008-2018)',
-                vAxis: { title: 'Millones de personas', minValue: 0 },
-                hAxis: { title: 'Año' },
-                curveType: 'function',
-                pointSize: 6, // Puntos identificadores
-                legend: { position: 'bottom' },
-                colors: ['#264653', '#e76f51'] // Paleta Armónica
-            };
-            var chart = new google.visualization.LineChart(document.getElementById('chart1_div'));
-            chart.draw(data, options);
-        }
+.dash {
+  width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
 
-        // 2. Gráfico Circular: Distribución con Total de Referencia
-        function drawChart2() {
-            var data = google.visualization.arrayToDataTable([
-                ['Indicador', 'Millones de Personas'],
-                ['Pobreza (Moderada y Extrema)', 52.4],
-                ['Vulnerables (Carencias sociales)', 36.7],
-                ['Vulnerables (Ingresos)', 8.6],
-                ['No pobre y no vulnerable', 27.4]
-            ]);
-            var options = { 
-                title: 'Distribución de la Población Nacional en 2018 \n(Total referente: 125.1 Millones de personas)', 
-                pieHole: 0.4, 
-                colors: ['#e76f51', '#f4a261', '#e9c46a', '#2a9d8f']
-            };
-            var chart = new google.visualization.PieChart(document.getElementById('chart2_div'));
-            chart.draw(data, options);
-        }
+/* ── Encabezado ── */
+.header {
+  background: #FFFFFF;
+  border: 1px solid #D3D1C7;
+  border-radius: 8px;
+  padding: 18px 26px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.hdr-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #111;
+  letter-spacing: -0.3px;
+}
+.hdr-sub {
+  font-size: 12px;
+  color: #6B6965;
+  margin-top: 4px;
+}
+.hdr-right {
+  text-align: right;
+  font-size: 12px;
+  color: #6B6965;
+  line-height: 1.7;
+}
 
-        // 3. Gráfico de Barras: Muestra de Estados
-        function drawChart3() {
-            var data = google.visualization.arrayToDataTable([
-                ['Estado', '2008 (%)', '2018 (%)'],
-                ['Aguascalientes', 4.2, 1.2],
-                ['Baja California', 3.3, 1.6],
-                ['Campeche', 11.9, 9.8],
-                ['Coahuila', 3.1, 1.4],
-                ['Chiapas', 38.7, 29.7]
-            ]);
-            var options = { 
-                title: 'Pobreza Extrema: Entidades Seleccionadas (2008 vs 2018)', 
-                bars: 'horizontal',
-                colors: ['#e9c46a', '#e76f51']
-            };
-            var chart = new google.visualization.BarChart(document.getElementById('chart3_div'));
-            chart.draw(data, options);
-        }
+/* ── KPIs ── */
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+}
+.kpi-card {
+  background: #FFFFFF;
+  border: 1px solid #D3D1C7;
+  border-radius: 8px;
+  padding: 16px 18px;
+}
+.kpi-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: #0F6E56;
+  line-height: 1;
+}
+.kpi-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: #2C2A28;
+  margin-top: 8px;
+}
+.kpi-sub {
+  font-size: 11px;
+  color: #9A9895;
+  margin-top: 3px;
+}
 
-// 4. Gráfico de Áreas: Evolución de Carencias
-        function drawChart4() {
-            var data = google.visualization.arrayToDataTable([
-                ['Año', 'Pobl. en Pobreza', 'Pobl. en Pobreza Extrema'],
-                ['2008', 2.8, 3.9],
-                ['2010', 2.6, 3.8],
-                ['2012', 2.4, 3.7],
-                ['2014', 2.3, 3.6],
-                ['2016', 2.2, 3.5],
-                ['2018', 2.2, 3.6]
-            ]);
-            var options = { 
-                title: 'Promedio de Carencias Sociales (2008-2018)', 
-                vAxis: { title: 'Promedio de carencias' }, // Título añadido al eje Y
-                hAxis: { title: 'Año' }, // Título añadido al eje X
-                isStacked: false,
-                colors: ['#264653', '#e76f51']
-            };
-            var chart = new google.visualization.AreaChart(document.getElementById('chart4_div'));
-            chart.draw(data, options);
-        }
+/* ── Filas de paneles ── */
+.row2, .row3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  align-items: stretch;
+}
 
-        // 5. Gráfico de Barras Horizontales: Todos los estados ordenados con destacados
-        function drawChart5() {
-            var data = google.visualization.arrayToDataTable([
-                ['Estado', 'Millones de Personas', { role: 'style' }, { role: 'annotation' }],
-                ['Chiapas', 1.62, 'color: #e76f51', '1.62'],
-                ['Veracruz', 1.46, 'color: #e76f51', '1.46'],
-                ['Guerrero', 0.97, 'color: #e76f51', '0.97'],
-                ['Oaxaca', 0.95, 'color: #e76f51', '0.95'],
-                ['México', 0.87, 'color: #e76f51', '0.87'],
-                ['Puebla', 0.55, 'color: #f2c7ba', ''],
-                ['Tabasco', 0.30, 'color: #f2c7ba', ''],
-                ['Michoacán', 0.28, 'color: #f2c7ba', ''],
-                ['Guanajuato', 0.25, 'color: #f2c7ba', ''],
-                ['Jalisco', 0.24, 'color: #f2c7ba', ''],
-                ['San Luis Potosí', 0.21, 'color: #f2c7ba', ''],
-                ['Hidalgo', 0.18, 'color: #f2c7ba', ''],
-                ['Ciudad de México', 0.15, 'color: #f2c7ba', ''],
-                ['Yucatán', 0.15, 'color: #f2c7ba', ''],
-                ['Morelos', 0.15, 'color: #f2c7ba', ''],
-                ['Tamaulipas', 0.12, 'color: #f2c7ba', ''],
-                ['Chihuahua', 0.10, 'color: #f2c7ba', ''],
-                ['Campeche', 0.09, 'color: #f2c7ba', ''],
-                ['Sinaloa', 0.08, 'color: #f2c7ba', ''],
-                ['Sonora', 0.08, 'color: #f2c7ba', ''],
-                ['Nayarit', 0.08, 'color: #f2c7ba', ''],
-                ['Quintana Roo', 0.06, 'color: #f2c7ba', ''],
-                ['Baja California', 0.06, 'color: #f2c7ba', ''],
-                ['Zacatecas', 0.05, 'color: #f2c7ba', ''],
-                ['Coahuila', 0.04, 'color: #f2c7ba', ''],
-                ['Tlaxcala', 0.04, 'color: #f2c7ba', ''],
-                ['Querétaro', 0.04, 'color: #f2c7ba', ''],
-                ['Durango', 0.04, 'color: #f2c7ba', ''],
-                ['Nuevo León', 0.03, 'color: #f2c7ba', ''],
-                ['Colima', 0.02, 'color: #f2c7ba', ''],
-                ['Aguascalientes', 0.02, 'color: #f2c7ba', ''],
-                ['Baja California Sur', 0.01, 'color: #f2c7ba', '']
-            ]);
-            var options = { 
-                title: 'Volumen de Pobreza Extrema por Estado en 2018 (Millones de Personas)', 
-                legend: { position: 'none' },
-                hAxis: { title: 'Millones de Personas' },
-                chartArea: { width: '65%', height: '85%' }
-            };
-            var chart = new google.visualization.BarChart(document.getElementById('chart5_div'));
-            chart.draw(data, options);
-        }
-    </script>
-    <style>
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background-color: #f4f7f6;
-            margin: 0;
-            padding: 20px; 
-        }
-        h1 {
-            text-align: center;
-            color: #264653;
-            margin-bottom: 30px;
-        }
-        .dashboard { 
-            display: flex; 
-            flex-wrap: wrap; 
-            gap: 20px; 
-            justify-content: center; 
-        }
-        .chart-container { 
-            width: 48%; 
-            min-width: 500px;
-            height: 400px; 
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            padding: 10px;
-        }
-        /* Clase específica para hacer más alto el gráfico de 32 estados */
-        .chart-tall {
-            width: 98%;
-            height: 800px; 
-        }
-    </style>
+/* ── Panel genérico ── */
+.panel {
+  background: #FFFFFF;
+  border: 1px solid #D3D1C7;
+  border-radius: 8px;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+}
+.panel-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: #4A4845;
+  padding-bottom: 10px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid #ECEAE4;
+  flex-shrink: 0;
+}
+.chart-box {
+  flex: 1;
+  position: relative;
+}
+
+/* ── Leyenda ── */
+.legend {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+  flex-shrink: 0;
+}
+.leg-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: #4A4845;
+}
+.leg-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+/* ── G2 Mapa de calor ── */
+.heatmap {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 11px;
+}
+.heatmap th {
+  background: #F5F4F0;
+  border: 1px solid #D3D1C7;
+  padding: 5px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #4A4845;
+  text-align: center;
+}
+.heatmap td {
+  border: 1px solid #D3D1C7;
+  padding: 0;
+  height: 22px;
+  min-width: 68px;
+}
+.mlabel {
+  background: #F5F4F0 !important;
+  color: #4A4845 !important;
+  font-weight: 600 !important;
+  font-size: 11px !important;
+  padding: 0 10px 0 6px !important;
+  white-space: nowrap;
+}
+/* G2 leyenda de escala */
+.hm-legend {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 7px 10px;
+  border: 1px solid #D3D1C7;
+  border-radius: 4px;
+  background: #FFFFFF;
+}
+.hm-leg-title {
+  font-size: 10px;
+  font-weight: 700;
+  color: #4A4845;
+  margin-bottom: 5px;
+}
+.hm-leg-bar {
+  height: 12px;
+  width: 140px;
+  border-radius: 2px;
+  background: linear-gradient(to right, #E8F5F0, #0F6E56);
+  border: 1px solid #D3D1C7;
+}
+.hm-leg-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 9px;
+  color: #6B6965;
+  margin-top: 3px;
+  width: 140px;
+}
+
+/* ── G3 Treemap squarified ── */
+.g3-wrap {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  flex: 1;
+  min-height: 0;
+  margin-top: 4px;
+}
+.g3-map {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  border-radius: 3px;
+  min-height: 300px;
+}
+.g3-leg {
+  width: 148px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow-y: auto;
+  font-size: 10px;
+}
+.g3-leg-title {
+  font-size: 10px;
+  font-weight: 700;
+  color: #4A4845;
+  margin-bottom: 4px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #ECEAE4;
+}
+.g3-leg-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #3A3835;
+  line-height: 1.4;
+}
+.g3-leg-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+/* bloques del treemap (renderizados via JS) */
+.tm-block {
+  position: absolute;
+  box-sizing: border-box;
+  border: 1.5px solid rgba(255,255,255,0.6);
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  padding: 3px 4px;
+  cursor: default;
+}
+.tm-block span {
+  font-size: 9px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.92);
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+}
+
+/* ── G5 panel ancho completo ── */
+.panel-full {
+  background: #FFFFFF;
+  border: 1px solid #D3D1C7;
+  border-radius: 8px;
+  padding: 16px 18px;
+}
+
+/* ── Footer ── */
+.footer {
+  background: #FFFFFF;
+  border: 1px solid #D3D1C7;
+  border-radius: 8px;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  color: #9A9895;
+}
+</style>
 </head>
 <body>
-    <h1>Tablero Visual: 10 Años de Medición de Pobreza en México</h1>
-    <div class="dashboard">
-        <div id="chart1_div" class="chart-container"></div>
-        <div id="chart2_div" class="chart-container"></div>
-        <div id="chart3_div" class="chart-container"></div>
-        <div id="chart4_div" class="chart-container"></div>
-        <div id="chart5_div" class="chart-container chart-tall"></div> <!-- Contenedor ampliado -->
+<div class="dash">
+
+  <!-- ENCABEZADO -->
+  <div class="header">
+    <div>
+      <div class="hdr-title">Global Superstore &mdash; Análisis de Ventas 2012&ndash;2015</div>
+      <div class="hdr-sub">Universidad del Valle de México &nbsp;·&nbsp; Visualización Gráfica de Datos &nbsp;·&nbsp; Proyecto Integrador</div>
     </div>
+    <div class="hdr-right">
+      Marcela Cadena &nbsp;·&nbsp; Alejandro Guedez &nbsp;·&nbsp; Edgar Jair Ríos<br>
+      Fuente: Global Superstore Orders 2016
+    </div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-value">$12.64M</div>
+        <div class="kpi-label">Ventas Totales</div>
+        <div class="kpi-sub">acumulado 2012–2015</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-value">$1.47M</div>
+        <div class="kpi-label">Beneficio Neto</div>
+        <div class="kpi-sub">acumulado 2012–2015</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-value">178,312</div>
+        <div class="kpi-label">Unidades Vendidas</div>
+        <div class="kpi-sub">unidades totales</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-value">1,079</div>
+        <div class="kpi-label">Pedidos Devueltos</div>
+        <div class="kpi-sub">registros en devoluciones</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-value">4.2%</div>
+        <div class="kpi-label">Tasa de Devolución</div>
+        <div class="kpi-sub">sobre pedidos únicos</div>
+      </div>
+  </div>
+
+  <!-- FILA 2: G1 + G2 -->
+  <div class="row2">
+
+    <div class="panel">
+      <div class="panel-title">G1 &nbsp;·&nbsp; Ventas trimestrales por categoría (miles USD)</div>
+      <div class="legend"><span class="leg-item"><span class="leg-dot" style="background:#0F6E56"></span>Tecnología</span><span class="leg-item"><span class="leg-dot" style="background:#D85A30"></span>Mobiliario</span><span class="leg-item"><span class="leg-dot" style="background:#534AB7"></span>Material de oficina</span></div>
+      <div class="chart-box" style="height:280px">
+        <canvas id="g1"></canvas>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">G2 &nbsp;·&nbsp; Ventas mensuales por año</div>
+      <table class="heatmap"><thead><tr><th></th><th>2012</th><th>2013</th><th>2014</th><th>2015</th></tr></thead><tbody><tr><td class="mlabel">enero</td><td style="background:#E8F5F0"></td><td style="background:#D5E9E3"></td><td style="background:#B8D7CE"></td><td style="background:#A4CABF"></td></tr><tr><td class="mlabel">febrero</td><td style="background:#E5F3EE"></td><td style="background:#E8F5F0"></td><td style="background:#C7E0D8"></td><td style="background:#BFDBD3"></td></tr><tr><td class="mlabel">marzo</td><td style="background:#D6EAE3"></td><td style="background:#C9E2DA"></td><td style="background:#B8D7CE"></td><td style="background:#99C4B8"></td></tr><tr><td class="mlabel">abril</td><td style="background:#E0F0EA"></td><td style="background:#CAE2DB"></td><td style="background:#C2DDD5"></td><td style="background:#A3CABF"></td></tr><tr><td class="mlabel">mayo</td><td style="background:#CBE3DB"></td><td style="background:#B3D4CB"></td><td style="background:#9BC5B9"></td><td style="background:#8DBCB0"></td></tr><tr><td class="mlabel">junio</td><td style="background:#B4D4CB"></td><td style="background:#9DC6BA"></td><td style="background:#5A9C8B"></td><td style="background:#579B89"></td></tr><tr><td class="mlabel">julio</td><td style="background:#DEEFE9"></td><td style="background:#D1E7E0"></td><td style="background:#A9CEC3"></td><td style="background:#9CC5BA"></td></tr><tr><td class="mlabel">agosto</td><td style="background:#B4D4CB"></td><td style="background:#86B8AB"></td><td style="background:#7BB1A3"></td><td style="background:#3D8B77"></td></tr><tr><td class="mlabel">septiembre</td><td style="background:#8FBEB1"></td><td style="background:#8DBCAF"></td><td style="background:#63A292"></td><td style="background:#32836F"></td></tr><tr><td class="mlabel">octubre</td><td style="background:#B0D2C8"></td><td style="background:#9EC7BC"></td><td style="background:#8BBBAE"></td><td style="background:#4D9582"></td></tr><tr><td class="mlabel">noviembre</td><td style="background:#8BBBAE"></td><td style="background:#7DB2A4"></td><td style="background:#65A393"></td><td style="background:#0F6E56"></td></tr><tr><td class="mlabel">diciembre</td><td style="background:#7EB3A5"></td><td style="background:#76AE9F"></td><td style="background:#569A88"></td><td style="background:#277D67"></td></tr></tbody></table>
+      
+<div class="hm-legend">
+  <div class="hm-leg-title">Ventas</div>
+  <div class="hm-leg-bar"></div>
+  <div class="hm-leg-labels">
+    <span>$98,900</span>
+    <span>$555,300</span>
+  </div>
+</div>
+    </div>
+
+  </div>
+
+  <!-- FILA 3: G3 + G4 -->
+  <div class="row3">
+
+    <div class="panel">
+      <div class="panel-title">G3 &nbsp;·&nbsp; Ventas por categoría y subcategoría de producto (2012–2015)</div>
+      <div class="g3-wrap"><div class="g3-map" id="g3map"></div><div class="g3-leg" id="g3leg"></div></div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">G4 &nbsp;·&nbsp; Ventas por mercado y categoría (miles USD)</div>
+      <div class="legend"><span class="leg-item"><span class="leg-dot" style="background:#0F6E56"></span>Tecnología</span><span class="leg-item"><span class="leg-dot" style="background:#D85A30"></span>Mobiliario</span><span class="leg-item"><span class="leg-dot" style="background:#534AB7"></span>Material de oficina</span></div>
+      <div class="chart-box" style="height:290px">
+        <canvas id="g4"></canvas>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FILA 4: G5 ancho completo -->
+  <div class="panel-full">
+    <div class="panel-title">G5 &nbsp;·&nbsp; Beneficio neto por subcategoría (miles USD)</div>
+    <div class="legend" style="margin-bottom:10px">
+      <span class="leg-item"><span class="leg-dot" style="background:#BA7517"></span>Beneficio positivo</span>
+      <span class="leg-item"><span class="leg-dot" style="background:#5F5E5A"></span>Beneficio negativo</span>
+    </div>
+    <div style="height:420px;position:relative">
+      <canvas id="g5"></canvas>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <span>Fuente: Global Superstore Orders 2016 (Kaggle) &nbsp;·&nbsp; Período 2012–2015 &nbsp;·&nbsp; 51,290 registros &nbsp;·&nbsp; 25,728 pedidos únicos</span>
+    <span>Marcela Cadena &nbsp;·&nbsp; Alejandro Guedez &nbsp;·&nbsp; Edgar Jair Ríos &mdash; UVM 2026</span>
+  </div>
+
+</div><!-- .dash -->
+
+<script>
+// ── Datos inline ─────────────────────────────────────────────────────────────
+const G1_LABELS   = ["T1", "T2", "T3", "T4", "T1", "T2", "T3", "T4", "T1", "T2", "T3", "T4", "T1", "T2", "T3", "T4"];
+const G1_DATASETS = [{"label": "Tecnología 2012", "data": [136.58, 166.0, 216.59, 308.48, null, null, null, null, null, null, null, null, null, null, null, null], "color": "#0F6E56"}, {"label": "Tecnología 2013", "data": [null, null, null, null, 138.61, 245.68, 293.02, 346.14, null, null, null, null, null, null, null, null], "color": "#0F6E56"}, {"label": "Tecnología 2014", "data": [null, null, null, null, null, null, null, null, 180.23, 348.62, 346.98, 401.47, null, null, null, null], "color": "#0F6E56"}, {"label": "Tecnología 2015", "data": [null, null, null, null, null, null, null, null, null, null, null, null, 262.58, 328.31, 445.29, 579.97], "color": "#0F6E56"}, {"label": "Mobiliario 2012", "data": [110.54, 157.04, 193.32, 295.18, null, null, null, null, null, null, null, null, null, null, null, null], "color": "#D85A30"}, {"label": "Mobiliario 2013", "data": [null, null, null, null, 135.48, 199.12, 222.3, 301.92, null, null, null, null, null, null, null, null], "color": "#D85A30"}, {"label": "Mobiliario 2014", "data": [null, null, null, null, null, null, null, null, 206.25, 244.21, 311.85, 355.32, null, null, null, null], "color": "#D85A30"}, {"label": "Mobiliario 2015", "data": [null, null, null, null, null, null, null, null, null, null, null, null, 217.21, 304.99, 384.4, 471.32], "color": "#D85A30"}, {"label": "Material de oficina 2012", "data": [91.24, 157.09, 201.18, 226.2, null, null, null, null, null, null, null, null, null, null, null, null], "color": "#534AB7"}, {"label": "Material de oficina 2013", "data": [null, null, null, null, 125.28, 180.8, 222.45, 266.65, null, null, null, null, null, null, null, null], "color": "#534AB7"}, {"label": "Material de oficina 2014", "data": [null, null, null, null, null, null, null, null, 178.54, 242.01, 274.2, 316.05, null, null, null, null], "color": "#534AB7"}, {"label": "Material de oficina 2015", "data": [null, null, null, null, null, null, null, null, null, null, null, null, 209.41, 299.69, 366.79, 429.9], "color": "#534AB7"}];
+const G3_RECTS    = [{"name": "Teléfonos", "cat": "Tecnología", "value": 1706.8, "color": "#E07030", "x": 0, "y": 0, "w": 37.32, "h": 36.18}, {"name": "Copiadoras", "cat": "Tecnología", "value": 1509.4, "color": "#1A7A6A", "x": 0, "y": 36.18, "w": 37.32, "h": 31.99}, {"name": "Sillas", "cat": "Mobiliario", "value": 1501.7, "color": "#C44898", "x": 0, "y": 68.17, "w": 37.32, "h": 31.83}, {"name": "Librerías", "cat": "Mobiliario", "value": 1466.6, "color": "#58A030", "x": 37.32, "y": 0, "w": 35.45, "h": 32.73}, {"name": "Almacenamiento", "cat": "Material de oficina", "value": 1126.8, "color": "#6EB4D4", "x": 72.77, "y": 0, "w": 27.23, "h": 32.73}, {"name": "Artefactos", "cat": "Material de oficina", "value": 1010.5, "color": "#267832", "x": 37.32, "y": 32.73, "w": 35.39, "h": 22.58}, {"name": "Máquinas", "cat": "Tecnología", "value": 779.1, "color": "#40B8B0", "x": 72.71, "y": 32.73, "w": 27.29, "h": 22.58}, {"name": "Mesas", "cat": "Mobiliario", "value": 757.0, "color": "#D94898", "x": 37.32, "y": 55.31, "w": 26.66, "h": 22.46}, {"name": "Accesorios", "cat": "Tecnología", "value": 749.2, "color": "#2D5F9E", "x": 37.32, "y": 77.77, "w": 26.66, "h": 22.23}, {"name": "Archivadores", "cat": "Material de oficina", "value": 461.9, "color": "#D97030", "x": 63.98, "y": 55.31, "w": 19.64, "h": 18.6}, {"name": "Mobiliario", "cat": "Mobiliario", "value": 385.2, "color": "#585878", "x": 83.62, "y": 55.31, "w": 16.38, "h": 18.6}, {"name": "Arte", "cat": "Material de oficina", "value": 371.6, "color": "#F0B87E", "x": 63.98, "y": 73.91, "w": 18.63, "h": 15.78}, {"name": "Material", "cat": "Material de oficina", "value": 242.8, "color": "#C82828", "x": 63.98, "y": 89.69, "w": 18.63, "h": 10.31}, {"name": "Papel", "cat": "Material de oficina", "value": 241.8, "color": "#A0A0B0", "x": 82.6, "y": 73.91, "w": 17.4, "h": 10.99}, {"name": "Sobres", "cat": "Material de oficina", "value": 169.2, "color": "#E890B8", "x": 82.6, "y": 84.9, "w": 8.86, "h": 15.1}, {"name": "Grapas", "cat": "Material de oficina", "value": 89.5, "color": "#C8A500", "x": 91.47, "y": 84.9, "w": 8.53, "h": 8.3}, {"name": "Etiquetas", "cat": "Material de oficina", "value": 73.4, "color": "#8B6838", "x": 91.47, "y": 93.2, "w": 8.53, "h": 6.8}];
+const G3_LEGEND   = [{"name": "Accesorios", "color": "#2D5F9E"}, {"name": "Almacenamiento", "color": "#6EB4D4"}, {"name": "Archivadores", "color": "#D97030"}, {"name": "Arte", "color": "#F0B87E"}, {"name": "Artefactos", "color": "#267832"}, {"name": "Copiadoras", "color": "#1A7A6A"}, {"name": "Etiquetas", "color": "#8B6838"}, {"name": "Grapas", "color": "#C8A500"}, {"name": "Librerías", "color": "#58A030"}, {"name": "Material", "color": "#C82828"}, {"name": "Mesas", "color": "#D94898"}, {"name": "Mobiliario", "color": "#585878"}, {"name": "Máquinas", "color": "#40B8B0"}, {"name": "Papel", "color": "#A0A0B0"}, {"name": "Sillas", "color": "#C44898"}, {"name": "Sobres", "color": "#E890B8"}, {"name": "Teléfonos", "color": "#E07030"}];
+const G4_MARKETS  = ["USCA", "Asia-Pacífico", "Europa", "LATAM", "África"];
+const G4_DATASETS = [{"label": "Tecnología", "data": [862.5, 1537.5, 1233.6, 788.7, 322.4], "color": "#0F6E56"}, {"label": "Mobiliario", "data": [752.2, 1461.6, 890.1, 812.0, 194.7], "color": "#D85A30"}, {"label": "Material de oficina", "data": [749.5, 1043.7, 1163.7, 563.9, 266.8], "color": "#534AB7"}];
+const G5_LABELS   = ["Copiadoras", "Teléfonos", "Librerías", "Artefactos", "Sillas", "Accesorios", "Almacenamiento", "Archivadores", "Máquinas", "Papel", "Arte", "Mobiliario", "Sobres", "Material", "Etiquetas", "Grapas", "Mesas"];
+const G5_VALUES   = [258.6, 216.7, 161.9, 141.6, 140.4, 129.6, 108.4, 72.4, 58.9, 58.1, 57.8, 46.8, 28.8, 22.6, 15.0, 13.8, -64.1];
+const G5_COLORS   = ["#BA7517", "#BA7517", "#BA7517", "#BA7517", "#BA7517", "#BA7517", "#BA7517", "#BA7517", "#BA7517", "#BA7517", "#BA7517", "#BA7517", "#BA7517", "#BA7517", "#BA7517", "#BA7517", "#5F5E5A"];
+
+// ── G3: Treemap squarified ────────────────────────────────────────────────────
+(function() {
+  const map  = document.getElementById('g3map');
+  const leg  = document.getElementById('g3leg');
+  const W    = map.offsetWidth;
+  const H    = map.offsetHeight;
+
+  // Renderizar bloques
+  G3_RECTS.forEach(r => {
+    const div = document.createElement('div');
+    div.className = 'tm-block';
+    div.title = `${r.name}: $${r.value}K`;
+    div.style.left   = (r.x / 100 * W) + 'px';
+    div.style.top    = (r.y / 100 * H) + 'px';
+    div.style.width  = (r.w / 100 * W) + 'px';
+    div.style.height = (r.h / 100 * H) + 'px';
+    div.style.background = r.color;
+    // Mostrar nombre solo si el bloque es suficientemente grande
+    const area = (r.w / 100 * W) * (r.h / 100 * H);
+    if (area > 1800) {
+      const sp = document.createElement('span');
+      sp.textContent = r.name;
+      div.appendChild(sp);
+    }
+    map.appendChild(div);
+  });
+
+  // Leyenda
+  const title = document.createElement('div');
+  title.className = 'g3-leg-title';
+  title.textContent = 'Subcategoría';
+  leg.appendChild(title);
+
+  G3_LEGEND.forEach(item => {
+    const row = document.createElement('div');
+    row.className = 'g3-leg-item';
+    row.innerHTML = `<span class="g3-leg-dot" style="background:${item.color}"></span>${item.name}`;
+    leg.appendChild(row);
+  });
+})();
+
+// ── Plugin: etiquetas en barras G5 ────────────────────────────────────────────
+const barLabelPlugin = {
+  id: 'barLabels',
+  afterDatasetsDraw(chart) {
+    const { ctx } = chart;
+    chart.data.datasets.forEach((ds, i) => {
+      chart.getDatasetMeta(i).data.forEach((bar, idx) => {
+        const v   = ds.data[idx];
+        const lbl = (v >= 0 ? '+' : '') + '$' + v.toFixed(1) + 'K';
+        ctx.save();
+        ctx.font      = 'bold 9px Segoe UI, system-ui, sans-serif';
+        ctx.fillStyle = '#2C2A28';
+        ctx.textBaseline = 'middle';
+        if (v >= 0) {
+          ctx.textAlign = 'left';
+          ctx.fillText(lbl, bar.x + 4, bar.y);
+        } else {
+          ctx.textAlign = 'right';
+          ctx.fillText(lbl, bar.x - 4, bar.y);
+        }
+        ctx.restore();
+      });
+    });
+  }
+};
+
+// ── Plugin: separadores de año y etiquetas para G1 ───────────────────────────
+const facetPlugin = {
+  id: 'facetLines',
+  afterDraw(chart) {
+    const { ctx, chartArea: { top, bottom }, scales: { x } } = chart;
+    // Líneas verticales entre años (entre índices 3-4, 7-8, 11-12)
+    [3, 7, 11].forEach(i => {
+      const x1 = x.getPixelForValue(i);
+      const x2 = x.getPixelForValue(i + 1);
+      const xMid = (x1 + x2) / 2;
+      ctx.save();
+      ctx.strokeStyle = '#BFBDB4';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([]);
+      ctx.beginPath();
+      ctx.moveTo(xMid, top);
+      ctx.lineTo(xMid, bottom);
+      ctx.stroke();
+      ctx.restore();
+    });
+    // Etiquetas de año encima del área del gráfico
+    const years = ['2012', '2013', '2014', '2015'];
+    years.forEach((yr, i) => {
+      const x0 = x.getPixelForValue(i * 4);
+      const x3 = x.getPixelForValue(i * 4 + 3);
+      const xC = (x0 + x3) / 2;
+      ctx.save();
+      ctx.fillStyle = '#4A4845';
+      ctx.font = '600 11px "Segoe UI", system-ui, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(yr, xC, top - 8);
+      ctx.restore();
+    });
+  }
+};
+
+// ── G1: Small multiples — líneas por trimestre, cortadas entre años ───────────
+new Chart(document.getElementById('g1'), {
+  type: 'line',
+  plugins: [facetPlugin],
+  data: {
+    labels: G1_LABELS,
+    datasets: G1_DATASETS.map(d => ({
+      label: d.label,
+      data: d.data,
+      borderColor: d.color,
+      backgroundColor: 'transparent',
+      borderWidth: 2,
+      pointRadius: 3,
+      pointHoverRadius: 5,
+      spanGaps: false,
+      tension: 0.1,
+    }))
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    layout: { padding: { top: 22 } },
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: ctx => `${ctx.dataset.label}: $${ctx.parsed.y.toFixed(1)}K`
+        }
+      }
+    },
+    scales: {
+      x: {
+        grid: { color: '#F0EEE8' },
+        ticks: { font: { size: 10 } }
+      },
+      y: {
+        grid: { color: '#F0EEE8' },
+        ticks: { font: { size: 10 }, callback: v => '$' + v + 'K' }
+      }
+    }
+  }
+});
+
+// ── G4: Barras agrupadas por mercado ──────────────────────────────────────────
+new Chart(document.getElementById('g4'), {
+  type: 'bar',
+  data: {
+    labels: G4_MARKETS,
+    datasets: G4_DATASETS.map(d => ({
+      label: d.label,
+      data: d.data,
+      backgroundColor: d.color,
+      borderRadius: 3,
+    }))
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: ctx => `${ctx.dataset.label}: $${ctx.parsed.x.toFixed(1)}K`
+        }
+      }
+    },
+    scales: {
+      x: {
+        grid: { color: '#F0EEE8' },
+        ticks: { font: { size: 10 }, callback: v => '$' + v + 'K' }
+      },
+      y: {
+        grid: { display: false },
+        ticks: { font: { size: 11 } }
+      }
+    }
+  }
+});
+
+// ── G5: Barras divergentes ────────────────────────────────────────────────────
+new Chart(document.getElementById('g5'), {
+  type: 'bar',
+  plugins: [barLabelPlugin],
+  data: {
+    labels: G5_LABELS,
+    datasets: [{
+      data: G5_VALUES,
+      backgroundColor: G5_COLORS,
+      borderRadius: 3,
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: ctx => `Beneficio: $${ctx.parsed.x.toFixed(1)}K`
+        }
+      }
+    },
+    scales: {
+      x: {
+        grid: { color: '#F0EEE8' },
+        ticks: { font: { size: 10 }, callback: v => '$' + v + 'K' }
+      },
+      y: {
+        grid: { display: false },
+        ticks: { font: { size: 11 } }
+      }
+    }
+  }
+});
+</script>
 </body>
 </html>
